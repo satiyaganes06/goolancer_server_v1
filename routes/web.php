@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Common\CommonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['prefix' => 'user'], function(){
+    
+    Route::get('/images/{filename}',[CommonController::class, 'imageViewer']);
+
+});
+
+Route::get('/images/{filename}',[CommonController::class, 'imageViewer']);
