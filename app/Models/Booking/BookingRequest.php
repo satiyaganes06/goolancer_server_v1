@@ -24,6 +24,7 @@ class BookingRequest extends Model
         'br_double_price',
         'br_var_delivery_time',
         'br_int_status',
+        'br_int_accept_request'
     ];
 
     const CREATED_AT = 'br_ts_created_at';

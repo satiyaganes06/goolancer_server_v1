@@ -9,6 +9,7 @@ use App\Http\Controllers\Certificate\ExpertCertificateController;
 use App\Http\Controllers\User\UserDetailsController;
 use App\Http\Controllers\Post\ExpertPostController;
 use App\Http\Controllers\Booking\BookingRequestController;
+use App\Http\Controllers\Job\JobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,22 @@ Route::group(['prefix' => 'user'], function(){
     Route::post('/getAllExpertPostByServiceCategory', [ExpertPostController::class, 'getAllExpertPostByServiceCategory']);
 
     //Negotiation
-    Route::post('/getBookingRequestNegotiation', [BookingRequestController::class, 'getBookingRequestNegotiation']);
+    Route::post('/getBookingRequestNegotiation', [BookingRequestController::class, 'getBookingRequestNegotiationByID']);
+    Route::post('/updateBookingRequestNegotiationStatus', [BookingRequestController::class, 'updateBookingRequestNegotiationStatus']);
+    Route::post('/updateBookingRequestAcceptReq', [BookingRequestController::class, 'updateBookingRequestAcceptReq']);
+    Route::post('/addNegotiation', [BookingRequestController::class, 'addNegotiation']);
+
+    //Job
+    Route::post('/getJobMainList', [JobController::class, 'viewJobMainList']);
+    Route::post('/getJobPaymentByID', [JobController::class, 'getJobPaymentByJobMainID']);
+    Route::post('/getJobMainByID', [JobController::class, 'getJobMainByID']);
+    Route::post('/getJobResultByJobMainID', [JobController::class, 'getJobResultByJobMainID']);
+    Route::post('/addJobComment', [JobController::class, 'addJobComment']);
+    Route::post('/getJobResultDeliveryByJobMainID', [JobController::class, 'getJobResultDeliveryByJobMainID']);
+    Route::post('/getRatingByJobMainID', [JobController::class, 'getJobUserRating']);
+
+    //Rating
+    Route::post('/getUserRatingListByServiceID', [JobController::class, 'getUserRatingListByServiceID']);
 });
 
 Route::group(['prefix' => 'client'], function(){
@@ -63,6 +79,15 @@ Route::group(['prefix' => 'client'], function(){
     //Service request
     Route::post('/addServiceRequest', [BookingRequestController::class, 'addBookingRequest']);
     Route::post('/getServiceRequest', [BookingRequestController::class, 'viewBookingRequest']);
+    Route::post('/getServiceRequestByID', [BookingRequestController::class, 'getBookingRequestByID']);
+
+    //Job
+    Route::post('/addJobPayment', [JobController::class, 'addJobPayment']);
+    Route::post('/updateJobResultStatus', [JobController::class, 'updateJobResultStatus']);
+    Route::post('/updateJobResultComplete', [JobController::class, 'updateJobResultComplete']);
+    Route::post('/getJobResultComments', [JobController::class, 'getJobResultComments']);
+    Route::post('/getJobResultByID', [JobController::class, 'getJobResultByID']);
+    Route::post('/addJobUserRating', [JobController::class, 'addJobUserRating']);
 
 
 });

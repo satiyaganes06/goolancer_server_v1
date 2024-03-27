@@ -1,0 +1,299 @@
+<?php
+
+namespace App\Http\Controllers\Job;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Base\BaseController as BaseController;
+use Illuminate\Support\Facades\DB;
+use App\Models\Booking\BookingRequest; // Import the missing class
+use App\Models\Booking\BookingRequestImage;
+use App\Models\Job\JobPayment;
+use App\Models\Job\JobMain;
+use App\Models\Job\JobResult;
+use App\Models\Job\JobResultComment;
+use App\Models\Job\JobResultFile;
+use App\Models\Job\JobUserRating;
+use App\Models\Post\ExpertPost;
+
+class JobController extends BaseController
+{
+
+    public function viewJobMainList(Request $request)
+    {
+
+        try {
+            // Fetch booking requests
+            $bookingRequests = BookingRequest::join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+                ->join('job_main', 'booking_request.br_int_ref', '=', 'job_main.jm_br_ref')
+                ->where('br_var_up_ref', $request->input('userID'))
+                ->select(
+                    'booking_request.*',
+                    'expert_service.es_var_user_ref as expertID',
+                    'job_main.*',
+                )
+                ->get();
+
+            // Fetch booking request images
+            $bookingRequestImages = BookingRequestImage::whereIn('bri_br_ref', $bookingRequests->pluck('br_int_ref'))->get();
+
+            // Group images by booking request
+            $groupedImages = $bookingRequestImages->groupBy('bri_br_ref');
+
+            // Add images to booking requests
+            foreach ($bookingRequests as $bookingRequest) {
+                $bookingRequest->imagesURL = $groupedImages[$bookingRequest->br_int_ref] ?? [];
+            }
+
+            return $this->sendResponse('get booking request details', '', $bookingRequests);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    public function getJobMainByID(Request $request)
+    {
+        try {
+            $jobMain = JobMain::where('jm_int_ref', $request->input('jobMainID'))->first();
+
+            return $this->sendResponse('get job main details', '', $jobMain);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    public function addJobPayment(Request $request)
+    {
+        try {
+            $jobPayment = new JobPayment();
+            $jobPayment->jp_jm_ref = $request->input('jobMainID');
+            $jobPayment->jp_var_up_ref = $request->input('userID');
+            $jobPayment->jp_int_type = $request->input('typeOfPayment');
+            $jobPayment->jp_var_acount_transfer_name = $request->input('accountName');
+            $jobPayment->jp_date_account_transfer_date = $request->input('accountDate');
+            $jobPayment->jp_double_account_transfer_amount = $request->input('accountAmount');
+            $jobPayment->jp_var_account_transfer_remark = $request->input('accountRemark');
+            $jobPayment->jp_var_receipt = $request->input('image');
+            $jobPayment->jp_int_status = 0;
+            $jobPayment->save();
+
+            return $this->sendResponse('add job payment', '', $jobPayment);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    public function getJobPaymentByJobMainID(Request $request)
+    {
+        try {
+            $jobPayment = JobPayment::where('jp_jm_ref', $request->input('jobMainID'))
+            ->where('jp_int_type',  $request->input('type'))
+            ->orderBy('jp_ts_created_at', 'desc')->first();
+
+            return $this->sendResponse('get job payment details', '', $jobPayment);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    //Job Result
+    public function getJobResultByJobMainID(Request $request)
+    {
+        try {
+
+            // Fetch booking requests
+            $jobResults = JobResult::where('jr_jm_ref', $request->input('jobMainID'))
+            ->where('jr_int_delivery_item', 0)
+            ->orderBy('jr_ts_created_at', 'desc')->get();
+
+            // Fetch job result comments
+            $jobResultComments = JobResultComment::whereIn('jrc_jr_ref', $jobResults->pluck('jr_int_ref'))->get();
+
+            // Fetch job result file
+            $jobResultFiles = JobResultFile::whereIn('jrf_jr_ref', $jobResults->pluck('jr_int_ref'))->get();
+
+            // Group comments and files by job result ID
+            $groupedComments = $jobResultComments->groupBy('jrc_jr_ref');
+            $groupedFiles = $jobResultFiles->groupBy('jrf_jr_ref');
+
+            // Iterate through job results and assign comments and files
+            foreach ($jobResults as $jobResult) {
+                $jobResult->jobComments = $groupedComments[$jobResult->jr_int_ref] ?? [];
+                $jobResult->fileURL = $groupedFiles[$jobResult->jr_int_ref] ?? [];
+            }
+
+
+
+            return $this->sendResponse('get booking request details', '', $jobResults);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    //Job Result
+    public function getJobResultDeliveryByJobMainID(Request $request)
+    {
+        try {
+
+            // Fetch booking requests
+            $jobResults = JobResult::where('jr_jm_ref', $request->input('jobMainID'))
+            ->where('jr_int_delivery_item', 1)
+            ->orderBy('jr_ts_created_at', 'desc')->get();
+
+            // Fetch job result file
+            $jobResultFiles = JobResultFile::whereIn('jrf_jr_ref', $jobResults->pluck('jr_int_ref'))->get();
+
+            $groupedFiles = $jobResultFiles->groupBy('jrf_jr_ref');
+
+            // Iterate through job results and assign comments and files
+            foreach ($jobResults as $jobResult) {
+                $jobResult->fileURL = $groupedFiles[$jobResult->jr_int_ref] ?? [];
+            }
+
+
+
+            return $this->sendResponse('get booking request details', '', $jobResults);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    public function addJobComment(Request $request)
+    {
+        try {
+            $jobResultComment = new JobResultComment();
+            $jobResultComment->jrc_jr_ref = $request->input('jobResultID');
+            $jobResultComment->jrc_int_user_type = $request->input('userType');
+            $jobResultComment->jrc_txt_comment = $request->input('comment');
+            $jobResultComment->save();
+
+            $result = JobResultComment::where('jrc_jr_ref', $request->input('jobResultID'))->get();
+
+            return $this->sendResponse('add job comment', '', $result);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    public function updateJobResultStatus(Request $request)
+    {
+        try {
+            JobResult::where('jr_int_ref', $request->input('jobResultID'))->update(
+                array(
+                    'jr_int_status' => $request->input('status')
+                )
+            );
+
+            $jobResult = JobResult::where('jr_int_ref', $request->input('jobResultID'))->first();
+
+            return $this->sendResponse('updated successfully', '', $jobResult);
+        } catch (\Throwable $th) {
+
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+
+    public function updateJobResultComplete(Request $request)
+    {
+        try {
+
+            if ($request->input('status') == 0) {
+                JobMain::where('jm_int_ref', $request->input('jobMainID'))->update(
+                    array(
+                        'jm_int_accept_result' => $request->input('status')
+                    )
+                );
+            } else if ($request->input('status') == 2) {
+                JobMain::where('jm_int_ref', $request->input('jobMainID'))->update(
+                    array(
+                        'jm_int_timeline_status' => $request->input('status')
+                    )
+                );
+
+                JobMain::where('jm_int_ref', $request->input('jobMainID'))->update(
+                    array(
+                        'jm_int_accept_result' => 0
+                    )
+                );
+            }
+
+
+            return $this->sendResponse('updated successfully', '', '');
+        } catch (\Throwable $th) {
+
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+
+    public function getJobUserRating(Request $request){
+        try {
+            $jobUserRating = JobUserRating::where('jur_jm_ref', $request->input('jobMainID'))->first();
+
+            return $this->sendResponse('get job user rating', '', $jobUserRating);
+
+        } catch (\Throwable $th) {
+
+            return $this->sendError($th->getMessage(), '', 500);
+
+        }
+    }
+
+    public function getUserRatingListByServiceID(Request $request){
+        try {
+
+
+            $jobUserRatings = JobUserRating::join('user_profile', 'job_user_rating.jur_var_up_ref', '=', 'user_profile.up_int_ref')
+            ->where('jur_int_es_ref', $request->input('serviceID'))
+            ->get();
+
+            return $this->sendResponse('get job user rating', '', $jobUserRatings);
+
+        } catch (\Throwable $th) {
+
+            return $this->sendError($th->getMessage(), '', 500);
+
+        }
+    }
+
+    public function addJobUserRating(Request $request){
+        try {
+            $jobUserRating = new JobUserRating();
+            $jobUserRating->jur_jm_ref = $request->input('jobMainID');
+            $jobUserRating->jur_var_up_ref = $request->input('userID');
+            $jobUserRating->jur_rating_point = $request->input('ratingPoint');
+            $jobUserRating->jur_txt_comment = $request->input('comment');
+            $jobUserRating->jur_int_es_ref = $request->input('expertServiceID');
+            $jobUserRating->save();
+
+            return $this->sendResponse('add job user rating', '', $jobUserRating);
+
+        } catch (\Throwable $th) {
+
+            return $this->sendError($th->getMessage(), '', 500);
+
+        }
+    }
+
+
+
+    // public function getJobResultComments(Request $request){
+    //     try {
+    //         $jobResultComments = JobResultComment::where('jrc_jr_ref', $request->input('jobResultID'))->get();
+
+    //         return $this->sendResponse('get job result comments', '', $jobResultComments);
+    //     } catch (\Throwable $th) {
+    //         return $this->sendError($th->getMessage(), '', 500);
+    //     }
+    // }
+
+    // public function getJobResultByID(Request $request)
+    // {
+    //     try {
+    //         $jobResult = JobResult::where('jr_int_ref', $request->input('jobResultID'))->first();
+
+    //         return $this->sendResponse('get job result details', '', $jobResult);
+    //     } catch (\Throwable $th) {
+    //         return $this->sendError($th->getMessage(), '', 500);
+    //     }
+    // }
+}
