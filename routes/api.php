@@ -10,6 +10,7 @@ use App\Http\Controllers\User\UserDetailsController;
 use App\Http\Controllers\Post\ExpertPostController;
 use App\Http\Controllers\Booking\BookingRequestController;
 use App\Http\Controllers\Job\JobController;
+use App\Http\Controllers\Revenue\ExpertRevenueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,7 @@ Route::group(['prefix' => 'client'], function(){
     //Service
     Route::get('/getAllService', [ExpertServiceController::class, 'getAllServiceList']);
 
+
     //Certificate
     Route::post('/getExpertCertificateByService', [ExpertCertificateController::class, 'getExpertCertificateByService']);
 
@@ -93,6 +95,34 @@ Route::group(['prefix' => 'client'], function(){
 });
 
 Route::group(['prefix' => 'expert'], function(){
+
+    //Service
+    Route::post('/getAllServiceByExpertID', [ExpertServiceController::class, 'getAllServiceByExpertID']);
+    Route::post('/addService', [ExpertServiceController::class, 'addService']);
+
+    //Post
+    Route::post('/addPost', [ExpertPostController::class, 'addPost']);
+    Route::post('/getAllExpertPost', [ExpertPostController::class, 'getAllExpertPosts']);
+    Route::post('/deletePost', [ExpertPostController::class, 'deletePost']);
+
+    //Certificate
+    Route::post('/getAllExpertCertificateListByExpertID', [ExpertCertificateController::class, 'getAllExpertCertificateListByExpertID']);
+    Route::post('/addCertificate', [ExpertCertificateController::class, 'addCertificate']);
+    Route::post('/updateCertificateDetails', [ExpertCertificateController::class, 'updateCertificateDetails']);
+    Route::post('/deleteCertificate', [ExpertCertificateController::class, 'deleteCertificate']);
+
+    //Booking
+    Route::post('/getExpertBookingRequestList', [BookingRequestController::class, 'getExpertBookingRequest']);
+
+    //Job
+    Route::post('/getJobPaymentByExpertID', [JobController::class, 'getJobPaymentByExpertID']);
+    Route::post('/getJobMainNBookingReqByJobMainID', [JobController::class, 'getJobMainNBookingReqByJobMainID']);
+
+    //Revenue
+    Route::post('/addExpertRevenue', [ExpertRevenueController::class, 'addExpertRevenue']);
+    Route::post('/getExpertRevenue', [ExpertRevenueController::class, 'getExpertRevenue']);
+    Route::post('/getTransactionHistory', [ExpertRevenueController::class, 'getTransactionHistory']);
+    Route::post('/requestWithdrawal', [ExpertRevenueController::class, 'requestWithdrawal']);
 
 });
 

@@ -24,6 +24,7 @@ class UserProfile extends Model
         'up_var_email_contact',
         'up_var_address',
         'up_int_zip_code',
+        'up_txt_desc',
         'up_var_state',
         'up_int_first_time_login'
     ];

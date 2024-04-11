@@ -27,8 +27,6 @@ class UserDetailsController extends BaseController
         }
     }
 
-
-
     public function cpFirstTimeStatusCheck(Request $request)
     {
 
@@ -41,8 +39,6 @@ class UserDetailsController extends BaseController
             return $this->sendError('Error : ' . $e->getMessage(), 500);
         }
     }
-
-
 
     public function cpCompleteProfile(Request $request)
     {
@@ -79,7 +75,7 @@ class UserDetailsController extends BaseController
         try {
             // if ($request->hasFile('imageLink') && $request->file('imageLink')->isValid()) {
             //      $imagePath =  $request->file('imageLink')->store('Images/ProfileImages');
-                
+
 
               //  if ($imagePath) {
                     UserProfile::where('up_int_ref', $request->input('userID'))->update(
@@ -94,6 +90,7 @@ class UserDetailsController extends BaseController
                             'up_var_state' => $request->input('userState'),
                             'up_var_pic_first_name' => $request->input('imageLink'),
                             'up_int_first_time_login' => $request->input('firstTime'),
+                            'up_txt_desc' =>  $request->input('userDesc') != null ? $request->input('userDesc') : '',
                         )
                     );
                    // $url = Storage::url($imagePath);

@@ -274,6 +274,49 @@ class JobController extends BaseController
         }
     }
 
+    public function getJobPaymentByExpertID(Request $request){
+        try {
+            $payments = JobPayment::join('job_main', 'job_payment.jp_jm_ref', '=', 'job_main.jm_int_ref')
+            ->join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
+            ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+            ->where('expert_service.es_var_user_ref', $request->input('expertID'))
+            ->where('job_payment.jp_int_status', 1)
+            ->orderBy('job_payment.jp_ts_created_at', 'desc')
+            ->select('job_payment.*', 'job_main.*', 'booking_request.*', 'expert_service.*')
+            ->get();
+
+            return $this->sendResponse('get expert payments', '', $payments);
+
+        } catch (\Throwable $th) {
+
+            return $this->sendError($th->getMessage(), '', 500);
+
+        }
+    }
+
+    public function getJobMainNBookingReqByJobMainID(Request $request){
+        try {
+
+
+            $job = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
+            ->where('job_main.jm_int_ref', $request->input('jobMainID'))
+            ->select('job_main.*', 'booking_request.*')
+            ->first();
+
+            if ($job) {
+                $bookingRequestImages = BookingRequestImage::where('bri_br_ref', $job->br_int_ref)->get();
+                $job->imagesURL = $bookingRequestImages;
+            }
+
+            return $this->sendResponse('get job main and booking request', '', $job);
+
+        } catch (\Throwable $th) {
+
+            return $this->sendError($th->getMessage(), '', 500);
+
+        }
+    }
+
 
 
     // public function getJobResultComments(Request $request){

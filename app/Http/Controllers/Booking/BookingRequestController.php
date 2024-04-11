@@ -126,11 +126,20 @@ class BookingRequestController extends BaseController
                 $jobMain->save();
 
             }else{
-                BookingRequest::where('br_int_ref', $request->input('bookingRequestID'))->update(
-                    array(
-                        'br_int_accept_request' => $request->input('status')
-                    )
-                );
+                if($request->input('status') == 2){
+                    BookingRequest::where('br_int_ref', $request->input('bookingRequestID'))->update(
+                        array(
+                            'br_int_status' => 2
+                        )
+                    );
+                }else{
+                    BookingRequest::where('br_int_ref', $request->input('bookingRequestID'))->update(
+                        array(
+                            'br_int_accept_request' => 1
+                        )
+                    );
+                }
+
             }
 
             return $this->sendResponse('updated successfully', '', '');
@@ -179,6 +188,35 @@ class BookingRequestController extends BaseController
             );
 
             return $this->sendResponse('updated successfully', '', '');
+        } catch (\Throwable $th) {
+
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+
+    //Expert
+    public function getExpertBookingRequest(Request $request){
+        try {
+            $bookingRequests = BookingRequest::join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+            ->where('es_var_user_ref', $request->input('expertID'))
+            ->where('br_int_status', 0)
+            ->select(
+                'booking_request.*',
+                'expert_service.es_var_user_ref as expertID'
+            )
+            ->get();
+
+            $bookingRequestImages = BookingRequestImage::whereIn('bri_br_ref', $bookingRequests->pluck('br_int_ref'))->get();
+
+            // Group images by booking request
+            $groupedImages = $bookingRequestImages->groupBy('bri_br_ref');
+
+            // Add images to booking requests
+            foreach ($bookingRequests as $bookingRequest) {
+                $bookingRequest->imagesURL = $groupedImages[$bookingRequest->br_int_ref] ?? [];
+            }
+
+            return $this->sendResponse('get all info', '', $bookingRequests);
         } catch (\Throwable $th) {
 
             return $this->sendError('Error : ' . $th->getMessage(), 500);
