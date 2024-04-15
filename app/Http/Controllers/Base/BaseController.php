@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Base;
 use App\Http\Controllers\Controller;
 use App\Models\UserLogin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Exception;
 
 class BaseController extends Controller
 {
@@ -42,12 +44,30 @@ class BaseController extends Controller
         $encURI = urlencode($data);
         return str_split($encURI);
     }
-    
+
     public function decode_data($data) {
         $decData = urldecode($data);
         $decData = base64_decode($decData);
         return $decData;
     }
+
+    public function uploadImage(Request $request)
+  {
+    try {
+      $request->validate([
+        'image' => 'required', // Adjust the file size limit as needed
+      ]);
+
+      $pdf = $request->file('image');
+       $path = $pdf->store('uploads/images'); // 'pdfs' is the storage folder, you can change it as needed
+    //  $path = Storage::disk('local')->put('uploads/documents', $pdf);
+
+
+      return $this->sendResponse('Send succeffully',  $path, '');
+    } catch (Exception $e) {
+      return $this->sendError('Error : ' . $e->getMessage(), 500);
+    }
+  }
 
     // public function getCpProfileDetails($userLoginID){
     //     $userLoginDetails = UserLogin::where('ul_int_ref', $userLoginID)->value('ul_int_profile_ref');

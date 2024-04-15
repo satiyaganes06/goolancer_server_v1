@@ -11,9 +11,10 @@ class CommonController extends Controller
     public function imageViewer(Request $request)
     {
         $sss = $request->input('filepath');
-        $path = storage_path("app/{$sss}");
+        $path = storage_path("images/{$sss}");
 
         if (file_exists($path)) {
+            dd($path);
             return response()->file($path);
         } else {
             abort(404);

@@ -11,6 +11,7 @@ use App\Http\Controllers\Post\ExpertPostController;
 use App\Http\Controllers\Booking\BookingRequestController;
 use App\Http\Controllers\Job\JobController;
 use App\Http\Controllers\Revenue\ExpertRevenueController;
+use App\Http\Controllers\Base\BaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,9 @@ Route::group(['prefix' => 'user'], function(){
     Route::get('/settings', function(){ // result -> /admin/settings
         return "Settings";
     });
+
+    //Base
+    Route::post('/uploadImage', [BaseController::class, 'uploadImage']);
 
     //Auth
     Route::post('/auth/register', [AuthController::class, 'register']);

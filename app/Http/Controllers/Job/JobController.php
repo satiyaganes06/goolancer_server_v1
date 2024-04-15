@@ -319,6 +319,8 @@ class JobController extends BaseController
 
 
 
+
+
     // public function getJobResultComments(Request $request){
     //     try {
     //         $jobResultComments = JobResultComment::where('jrc_jr_ref', $request->input('jobResultID'))->get();
