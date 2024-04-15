@@ -36,13 +36,14 @@ Route::group(['prefix' => 'user'], function(){
     //Base
     Route::post('/uploadImage', [BaseController::class, 'uploadImage']);
 
+
     //Auth
     Route::post('/auth/register', [AuthController::class, 'register']);
     Route::post('/getUserProfileDetails', [UserDetailsController::class, 'getUserProfileDetail']);
     Route::post('/updateUserProfileInfo', [UserDetailsController::class, 'updateProfileInfo']);
 
     //Image Viewer
-    Route::post('/images',[CommonController::class, 'imageViewer']);
+    Route::post('/images',[CommonController::class, 'imageViewer'])->name('image.show');
 
     //Service
     Route::post('/getAllServiceByID', [ExpertServiceController::class, 'getAllServiceByID']);
