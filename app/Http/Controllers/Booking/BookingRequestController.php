@@ -27,7 +27,7 @@ class BookingRequestController extends BaseController
             $bookingRequest->br_var_title = $request->input('br_var_title');
             $bookingRequest->br_txt_desc = $request->input('br_txt_desc');
             $bookingRequest->br_var_address = $request->input('br_var_address');
-            $bookingRequest->br_int_zip_code = $request->input('br_int_zip_code');
+            $bookingRequest->br_int_zip_code =  number_format($request->input('br_int_zip_code'));
             $bookingRequest->br_var_state = $request->input('br_var_state');
             $bookingRequest->br_double_price = $request->input('br_double_price');
             $bookingRequest->br_var_delivery_time = $request->input('br_var_delivery_time');

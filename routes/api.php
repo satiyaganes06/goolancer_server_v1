@@ -35,6 +35,7 @@ Route::group(['prefix' => 'user'], function(){
 
     //Base
     Route::post('/uploadImage', [BaseController::class, 'uploadImage']);
+    Route::post('/displayImage', [CommonController::class, 'imageViewer2']);
 
 
     //Auth
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'user'], function(){
     Route::post('/getJobMainByID', [JobController::class, 'getJobMainByID']);
     Route::post('/getJobResultByJobMainID', [JobController::class, 'getJobResultByJobMainID']);
     Route::post('/addJobComment', [JobController::class, 'addJobComment']);
+    Route::post('/getJobCommentByJobResultID', [JobController::class, 'getJobCommentByJobResultID']);
     Route::post('/getJobResultDeliveryByJobMainID', [JobController::class, 'getJobResultDeliveryByJobMainID']);
     Route::post('/getRatingByJobMainID', [JobController::class, 'getJobUserRating']);
 
@@ -122,6 +124,8 @@ Route::group(['prefix' => 'expert'], function(){
     //Job
     Route::post('/getJobPaymentByExpertID', [JobController::class, 'getJobPaymentByExpertID']);
     Route::post('/getJobMainNBookingReqByJobMainID', [JobController::class, 'getJobMainNBookingReqByJobMainID']);
+    Route::post('/getJobMainList', [JobController::class, 'viewJobMainListForExpert']);
+    Route::post('/uploadJobResultProgress', [JobController::class, 'uploadJobResultProgress']);
 
     //Revenue
     Route::post('/addExpertRevenue', [ExpertRevenueController::class, 'addExpertRevenue']);

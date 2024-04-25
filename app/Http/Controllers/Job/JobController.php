@@ -15,6 +15,7 @@ use App\Models\Job\JobResultComment;
 use App\Models\Job\JobResultFile;
 use App\Models\Job\JobUserRating;
 use App\Models\Post\ExpertPost;
+use Illuminate\Support\Facades\Date;
 
 class JobController extends BaseController
 {
@@ -87,10 +88,55 @@ class JobController extends BaseController
     {
         try {
             $jobPayment = JobPayment::where('jp_jm_ref', $request->input('jobMainID'))
-            ->where('jp_int_type',  $request->input('type'))
-            ->orderBy('jp_ts_created_at', 'desc')->first();
+                ->where('jp_int_type',  $request->input('type'))
+                ->orderBy('jp_ts_created_at', 'desc')->first();
 
             return $this->sendResponse('get job payment details', '', $jobPayment);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    public function uploadJobResultProgress(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $jobResult = new JobResult();
+            $jobResult->jr_jm_ref = $request->input('jobMainID');
+            $jobResult->jr_int_delivery_item = $request->input('jrDeliveryItem');
+            $jobResult->jr_int_status = 0;
+            $jobResult->jr_txt_description = $request->input('desc');
+            $jobResult->jr_ts_created_at = Date('Y-m-d H:i:s');
+            $jobResult->save();
+
+            $jobResult->save();
+
+            if ($request->input('progressFiles') != null) {
+                $files = json_decode($request->input('progressFiles'));
+
+                foreach ($files as $file) {
+                    $jobResultFile = new JobResultFile();
+                    $jobResultFile->jrf_jr_ref = $jobResult->jr_int_ref;
+                    $jobResultFile->jrf_files_path = $file;
+                    $jobResultFile->save();
+                }
+            }
+
+            if($request->input('jrDeliveryItem') == 1){
+                JobMain::where('jm_int_ref', $request->input('jobMainID'))->update(
+                    array(
+                        'jm_int_status' => 1,
+                        'jm_int_timeline_status' => 4
+                    )
+                );
+            }
+
+
+
+            DB::commit();
+
+            return $this->sendResponse('upload job result progress', '', '');
         } catch (\Throwable $th) {
             return $this->sendError($th->getMessage(), '', 500);
         }
@@ -103,8 +149,8 @@ class JobController extends BaseController
 
             // Fetch booking requests
             $jobResults = JobResult::where('jr_jm_ref', $request->input('jobMainID'))
-            ->where('jr_int_delivery_item', 0)
-            ->orderBy('jr_ts_created_at', 'desc')->get();
+                ->where('jr_int_delivery_item', 0)
+                ->orderBy('jr_ts_created_at', 'desc')->get();
 
             // Fetch job result comments
             $jobResultComments = JobResultComment::whereIn('jrc_jr_ref', $jobResults->pluck('jr_int_ref'))->get();
@@ -137,8 +183,8 @@ class JobController extends BaseController
 
             // Fetch booking requests
             $jobResults = JobResult::where('jr_jm_ref', $request->input('jobMainID'))
-            ->where('jr_int_delivery_item', 1)
-            ->orderBy('jr_ts_created_at', 'desc')->get();
+                ->where('jr_int_delivery_item', 1)
+                ->orderBy('jr_ts_created_at', 'desc')->get();
 
             // Fetch job result file
             $jobResultFiles = JobResultFile::whereIn('jrf_jr_ref', $jobResults->pluck('jr_int_ref'))->get();
@@ -170,6 +216,17 @@ class JobController extends BaseController
             $result = JobResultComment::where('jrc_jr_ref', $request->input('jobResultID'))->get();
 
             return $this->sendResponse('add job comment', '', $result);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    public function getJobCommentByJobResultID(Request $request)
+    {
+        try {
+            $jobResultComments = JobResultComment::where('jrc_jr_ref', $request->input('jobResultID'))->get();
+
+            return $this->sendResponse('get job result comments', '', $jobResultComments);
         } catch (\Throwable $th) {
             return $this->sendError($th->getMessage(), '', 500);
         }
@@ -215,6 +272,12 @@ class JobController extends BaseController
                         'jm_int_accept_result' => 0
                     )
                 );
+            }else if($request->input('status') == 1){
+                JobMain::where('jm_int_ref', $request->input('jobMainID'))->update(
+                    array(
+                        'jm_int_accept_result' => $request->input('status')
+                    )
+                );
             }
 
 
@@ -225,37 +288,36 @@ class JobController extends BaseController
         }
     }
 
-    public function getJobUserRating(Request $request){
+    public function getJobUserRating(Request $request)
+    {
         try {
             $jobUserRating = JobUserRating::where('jur_jm_ref', $request->input('jobMainID'))->first();
 
             return $this->sendResponse('get job user rating', '', $jobUserRating);
-
         } catch (\Throwable $th) {
 
             return $this->sendError($th->getMessage(), '', 500);
-
         }
     }
 
-    public function getUserRatingListByServiceID(Request $request){
+    public function getUserRatingListByServiceID(Request $request)
+    {
         try {
 
 
             $jobUserRatings = JobUserRating::join('user_profile', 'job_user_rating.jur_var_up_ref', '=', 'user_profile.up_int_ref')
-            ->where('jur_int_es_ref', $request->input('serviceID'))
-            ->get();
+                ->where('jur_int_es_ref', $request->input('serviceID'))
+                ->get();
 
             return $this->sendResponse('get job user rating', '', $jobUserRatings);
-
         } catch (\Throwable $th) {
 
             return $this->sendError($th->getMessage(), '', 500);
-
         }
     }
 
-    public function addJobUserRating(Request $request){
+    public function addJobUserRating(Request $request)
+    {
         try {
             $jobUserRating = new JobUserRating();
             $jobUserRating->jur_jm_ref = $request->input('jobMainID');
@@ -266,42 +328,40 @@ class JobController extends BaseController
             $jobUserRating->save();
 
             return $this->sendResponse('add job user rating', '', $jobUserRating);
-
         } catch (\Throwable $th) {
 
             return $this->sendError($th->getMessage(), '', 500);
-
         }
     }
 
-    public function getJobPaymentByExpertID(Request $request){
+    public function getJobPaymentByExpertID(Request $request)
+    {
         try {
             $payments = JobPayment::join('job_main', 'job_payment.jp_jm_ref', '=', 'job_main.jm_int_ref')
-            ->join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
-            ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
-            ->where('expert_service.es_var_user_ref', $request->input('expertID'))
-            ->where('job_payment.jp_int_status', 1)
-            ->orderBy('job_payment.jp_ts_created_at', 'desc')
-            ->select('job_payment.*', 'job_main.*', 'booking_request.*', 'expert_service.*')
-            ->get();
+                ->join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
+                ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+                ->where('expert_service.es_var_user_ref', $request->input('expertID'))
+                ->where('job_payment.jp_int_status', 1)
+                ->orderBy('job_payment.jp_ts_created_at', 'desc')
+                ->select('job_payment.*', 'job_main.*', 'booking_request.*', 'expert_service.*')
+                ->get();
 
             return $this->sendResponse('get expert payments', '', $payments);
-
         } catch (\Throwable $th) {
 
             return $this->sendError($th->getMessage(), '', 500);
-
         }
     }
 
-    public function getJobMainNBookingReqByJobMainID(Request $request){
+    public function getJobMainNBookingReqByJobMainID(Request $request)
+    {
         try {
 
 
             $job = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
-            ->where('job_main.jm_int_ref', $request->input('jobMainID'))
-            ->select('job_main.*', 'booking_request.*')
-            ->first();
+                ->where('job_main.jm_int_ref', $request->input('jobMainID'))
+                ->select('job_main.*', 'booking_request.*')
+                ->first();
 
             if ($job) {
                 $bookingRequestImages = BookingRequestImage::where('bri_br_ref', $job->br_int_ref)->get();
@@ -309,16 +369,43 @@ class JobController extends BaseController
             }
 
             return $this->sendResponse('get job main and booking request', '', $job);
-
         } catch (\Throwable $th) {
 
             return $this->sendError($th->getMessage(), '', 500);
-
         }
     }
 
 
+    public function viewJobMainListForExpert(Request $request)
+    {
 
+        try {
+            // Fetch booking requests
+            $bookingRequests = BookingRequest::join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+                ->join('job_main', 'booking_request.br_int_ref', '=', 'job_main.jm_br_ref')
+                ->where('expert_service.es_var_user_ref', $request->input('expertID'))
+                ->select(
+                    'booking_request.*',
+                    'job_main.*',
+                )
+                ->get();
+
+            // Fetch booking request images
+            $bookingRequestImages = BookingRequestImage::whereIn('bri_br_ref', $bookingRequests->pluck('br_int_ref'))->get();
+
+            // Group images by booking request
+            $groupedImages = $bookingRequestImages->groupBy('bri_br_ref');
+
+            // Add images to booking requests
+            foreach ($bookingRequests as $bookingRequest) {
+                $bookingRequest->imagesURL = $groupedImages[$bookingRequest->br_int_ref] ?? [];
+            }
+
+            return $this->sendResponse('get booking request details', '', $bookingRequests);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
 
 
     // public function getJobResultComments(Request $request){

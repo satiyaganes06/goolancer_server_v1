@@ -20,10 +20,8 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'user'], function(){
 
-    Route::get('/images/{filename}',[CommonController::class, 'imageViewer']);
+    Route::get('/imageViewer/{filepath}',[CommonController::class, 'imageViewer']);
 
 });
 
-Route::get('/display-image/{imagePath}', CommonController::class, 'displayImage')->name('display.image');
 
-Route::get('/images/{filename}',[CommonController::class, 'imageViewer']);
