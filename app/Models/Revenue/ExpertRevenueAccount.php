@@ -16,6 +16,7 @@ class ExpertRevenueAccount extends Model
     protected $fillable = [
         'era_up_var_ref',
         'era_double_total_balance',
+        'era_double_deposit_queue',
         'era_double_total_withdrawn'
     ];
 

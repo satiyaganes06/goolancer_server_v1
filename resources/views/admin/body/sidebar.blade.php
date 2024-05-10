@@ -88,6 +88,13 @@
             </li>
 
             <li class="nav-item">
+                <a href="pages/apps/chat.html" class="nav-link">
+                    <i class="link-icon" data-feather="dollar-sign"></i>
+                    <span class="link-title">Refund</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="{{route('admin.viewAllServiceInfo')}}" class="nav-link">
                     <i class="link-icon" data-feather="briefcase"></i>
                     <span class="link-title">Services</span>

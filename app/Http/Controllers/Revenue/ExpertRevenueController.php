@@ -10,6 +10,8 @@ use App\Models\Certificate\ExpertCertificateLink;
 use App\Models\Post\ExpertPostLink;
 use App\Models\Revenue\ExpertRevenueAccount;
 use App\Models\Revenue\TransactionHistory;
+use App\Models\Revenue\RefundRequest;
+use App\Models\Job\JobMain;
 use Illuminate\Support\Facades\DB;
 
 class ExpertRevenueController extends BaseController
@@ -48,9 +50,23 @@ class ExpertRevenueController extends BaseController
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }
+    
+    public function getTransactionHistoryByUserID(Request $request){
+        try {
+            $transactionHistory = TransactionHistory::where('th_up_var_ref', $request->input('userID'))
+            ->where('th_jm_int_ref', $request->input('jobMainID'))
+            ->first();
+            return $this->sendResponse('', '', $transactionHistory);
+        } catch (\Throwable $th) {
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
 
     public function requestWithdrawal(Request $request){
         try {
+             /**  FIX ME!!! Its not add/remove from the expert_revenue_account  */
+            
+            
           //  DB::beginTransaction();
             // $revenueAccount = ExpertRevenueAccount::where('era_up_var_ref', $request->input('expertID'))->first();
             // $revenueAccount->era_double_total_withdrawn = $revenueAccount->era_double_total_withdrawn + $request->input('amount');
@@ -72,6 +88,69 @@ class ExpertRevenueController extends BaseController
             return $this->sendResponse('', 'Withdrawal request submitted successfully', '');
         } catch (\Throwable $th) {
             DB::rollBack();
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+    
+    public function refundRequest(Request $request){
+        try {
+            $refundRequest = new RefundRequest();
+            $refundRequest->rr_jm_ref = $request->input('jobMainID');
+            $refundRequest->rr_var_reason = $request->input('reason');
+            $refundRequest->rr_double_amount = $request->input('amount');
+            $refundRequest->rr_int_status = 0;
+            $refundRequest->save();
+            
+             JobMain::where('jm_int_ref', $request->input('jobMainID'))->update(
+                array(
+                    'jm_int_status' => 2
+                )
+            );
+
+
+            return $this->sendResponse('', 'Refund request submitted successfully', '');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+    
+    public function getRefundDetailsByJobMainID(Request $request){
+        try {
+            $refundDetails = RefundRequest::where('rr_jm_ref', $request->input('jobMainID'))->first();
+            return $this->sendResponse('', '', $refundDetails);
+        } catch (\Throwable $th) {
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+    
+    public function penaltyPayment(Request $request){
+        try {
+            TransactionHistory::where('th_int_ref', $request->input('transactionID'))->update(
+                array(
+                    'th_int_payment_proof' => $request->input('proof'),
+                    'th_var_transfer_account_name' => $request->input('accountName'),
+                    'th_int_transfer_account_num' => $request->input('accountNum'),
+    
+                )
+            );
+
+            return $this->sendResponse('', 'Penalty payment submitted successfully', '');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+    
+    public function checkTransactionType(Request $request)
+    {
+        try {
+            $transactions = TransactionHistory::where('th_up_var_ref', $request->input('clientID'))->get();
+
+            if ($transactions->contains('th_int_transaction_type', 3)) {
+                 return $this->sendResponse('true', '', '');
+            } else {
+                return $this->sendResponse('false', '', '');
+            }
+        } catch (\Throwable $th) {
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }

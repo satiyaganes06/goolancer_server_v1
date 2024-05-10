@@ -32,11 +32,9 @@ Route::group(['prefix' => 'user'], function(){
     Route::get('/settings', function(){ // result -> /admin/settings
         return "Settings";
     });
-
+    
     //Base
     Route::post('/uploadImage', [BaseController::class, 'uploadImage']);
-    Route::post('/displayImage', [CommonController::class, 'imageViewer2']);
-
 
     //Auth
     Route::post('/auth/register', [AuthController::class, 'register']);
@@ -44,7 +42,7 @@ Route::group(['prefix' => 'user'], function(){
     Route::post('/updateUserProfileInfo', [UserDetailsController::class, 'updateProfileInfo']);
 
     //Image Viewer
-    Route::post('/images',[CommonController::class, 'imageViewer'])->name('image.show');
+    Route::post('/images',[CommonController::class, 'imageViewer']);
 
     //Service
     Route::post('/getAllServiceByID', [ExpertServiceController::class, 'getAllServiceByID']);
@@ -71,6 +69,11 @@ Route::group(['prefix' => 'user'], function(){
 
     //Rating
     Route::post('/getUserRatingListByServiceID', [JobController::class, 'getUserRatingListByServiceID']);
+    
+    //Revenue
+    Route::post('/getRefundDetailsByJobMainID', [ExpertRevenueController::class, 'getRefundDetailsByJobMainID']);
+    Route::post('/getTransactionHistoryByUserID', [ExpertRevenueController::class, 'getTransactionHistoryByUserID']);
+
 });
 
 Route::group(['prefix' => 'client'], function(){
@@ -97,8 +100,11 @@ Route::group(['prefix' => 'client'], function(){
     Route::post('/getJobResultComments', [JobController::class, 'getJobResultComments']);
     Route::post('/getJobResultByID', [JobController::class, 'getJobResultByID']);
     Route::post('/addJobUserRating', [JobController::class, 'addJobUserRating']);
-
-
+    
+    //Revenue
+    Route::post('/refundRequest', [ExpertRevenueController::class, 'refundRequest']);
+    Route::post('/penaltyPayment', [ExpertRevenueController::class, 'penaltyPayment']);
+    Route::post('/checkTransactionType', [ExpertRevenueController::class, 'checkTransactionType']);
 });
 
 Route::group(['prefix' => 'expert'], function(){

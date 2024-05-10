@@ -25,6 +25,8 @@ class PaymentController extends BaseController
 
     public function approvePayment($id, $status, $paymentType)
     {
+        /**  FIX ME!!! Its not add/remove from the expert_revenue_account  */
+
         $payment = JobPayment::find($id);
         $payment->jp_int_status = $status;
         $payment->save();
@@ -37,6 +39,8 @@ class PaymentController extends BaseController
                         'jm_int_timeline_status' => 1
                     )
                 );
+
+                //Remove trans table and add era table and add the amount in quen
 
                 $transactionHistory = TransactionHistory::create(
                     array(
@@ -84,6 +88,11 @@ class PaymentController extends BaseController
             ->orderByRaw('jp_int_status = 0 DESC')->paginate(10);
 
         return redirect()->route('admin.approval.payment_approval', compact('payments'));
+    }
+
+
+    public function viewAllRefundList(){
+
     }
 
 }

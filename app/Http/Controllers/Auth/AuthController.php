@@ -15,16 +15,10 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Revenue\ExpertRevenueAccount;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 
 class AuthController extends BaseController
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth')->except('login');
-    // }
-
     public function register(Request $request)
     {
         try {
@@ -63,7 +57,7 @@ class AuthController extends BaseController
                 ]);
                 $userProfile->save();
 
-                if($request->input('upRole') == 1 || $request->input('upRole') == 2){
+                if($request->input('upRole') != 0){
                     $revenueAccount = new ExpertRevenueAccount();
                     $revenueAccount->era_up_var_ref = $request->input('upID');
                     $revenueAccount->era_double_total_balance = 0.0;
@@ -87,33 +81,6 @@ class AuthController extends BaseController
         } catch (\Throwable $th) {
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
-    }
-
-    public function adminLogin(Request $request)
-    {
-         // Validate the form data
-         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        // Check if the entered credentials match the hardcoded credentials
-        if ($request->email === 'admin@gmail.com' && $request->password === 'Pa$$w0rd') {
-            // Authentication passed
-            Session::put('loggedIn', true); // Set a session variable to indicate that the user is logged in
-            return redirect()->intended('/admin/dashboard'); // Redirect to dashboard or any other page
-        } else {
-            // Authentication failed
-            return back()->withInput()->withErrors(['email' => 'Invalid credentials']);
-        }
-    }
-
-
-    public function adminLogout()
-    {
-        Session::forget('loggedIn'); // Remove the loggedIn session variable
-        return redirect()->route('login'); // Redirect to the login page
-
     }
 }
 

@@ -14,6 +14,7 @@ class CommonController extends BaseController
 {
     public function imageViewer($filepath)
     {
+    //    dd($this->decode_data($filepath));
         $path = storage_path($this->decode_data($filepath));
         $contents = file_get_contents($path);
         $mime = mime_content_type($path);
@@ -25,16 +26,17 @@ class CommonController extends BaseController
                 'Content-Disposition' => 'inline', // This header indicates to display the content inline (in the browser)
             ]);
         } else {
-            abort(404,$this->decode_data($filepath));
+            return $this->sendError('Error : ' . $e->getMessage(). ' Path: '. $this->decode_data($filepath), 500);
         }
     }
 
-    public function imageViewer2(Request $request)
+
+    public function displayImage($app, $uploads, $folder, $category, $filename)
     {
-        $path = storage_path($request->filepath);
+        $path = storage_path($app. '/' .$uploads . '/' . $folder. '/' .$category. '/' .$filename);
         $contents = file_get_contents($path);
         $mime = mime_content_type($path);
-
+//app/uploads/images/JobResultFile/welcome2.png
         if (file_exists($path)) {
             // return response()->file($path);
             return Response::make($contents, 200, [
@@ -42,23 +44,7 @@ class CommonController extends BaseController
                 'Content-Disposition' => 'inline', // This header indicates to display the content inline (in the browser)
             ]);
         } else {
-            abort(404,$this->decode_data($request->filepath));
-        }
-    }
-
-    public function downloadFile($filepath)
-    {
-        $path = storage_path($this->decode_data($filepath));
-        $contents = file_get_contents($path);
-        $mime = mime_content_type($path);
-
-        if (file_exists($path)) {
-            return Response::make($contents, 200, [
-                'Content-Type' => $mime,
-                'Content-Disposition' => 'attachment', // This header indicates to download the file
-            ]);
-        } else {
-            abort(404,$this->decode_data($filepath));
+            return $this->sendError('Error : ' . $e->getMessage(). ' Path: '. $this->decode_data($filepath), 500);
         }
     }
 }
