@@ -28,6 +28,7 @@ Route::get('/', function () {
 Route::group(['prefix' => 'user'], function(){
 
     Route::get('/imageViewer/{filepath}',[CommonController::class, 'imageViewer'])->name('image.show');
+    Route::get('/displayImage/{app}/{uploads}/{folder}/{category}/{filename}',[CommonController::class, 'displayImage']);
 
 });
 
@@ -56,6 +57,12 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/viewAllPosts',[PostController::class, 'ViewAllPostsInfo'])->name('admin.viewAllPostsInfo')->middleware('checkLoggedIn');
     Route::get('/viewPost/{id}',[PostController::class, 'ViewPostInfo'])->name('admin.viewPostInfo')->middleware('checkLoggedIn');
 
+    Route::get('/viewAllRefunds',[PaymentController::class, 'viewAllRefundList'])->name('admin.viewAllRefundsInfo')->middleware('checkLoggedIn');
+    Route::get('/viewRefund/{id}',[PaymentController::class, 'ViewRefundInfo'])->name('admin.viewsRefundInfo')->middleware('checkLoggedIn');
+
+    Route::get('/viewAllTransactions',[PaymentController::class, 'viewAllTransactionInfo'])->name('admin.viewAllTransactionInfo');
+    Route::get('/viewTransaction/{id}',[PaymentController::class, 'ViewTransactionInfo'])->name('admin.viewTransactionInfo')->middleware('checkLoggedIn');
+
     Route::get('/serviceApproval',[ServiceController::class, 'serviceApproval'])->name('admin.approval.service_approval')->middleware('checkLoggedIn');
     Route::get('/certificateApproval',[CertificateController::class, 'CertificateApproval'])->name('admin.approval.certificate_approval')->middleware('checkLoggedIn');
     Route::get('/viewCert/{id}',[CertificateController::class, 'ViewCertificateInfo2'])->name('admin.approval.viewCertInfo')->middleware('checkLoggedIn');
@@ -65,5 +72,6 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/approvePost/{id}/{status}',[PostController::class, 'approveCertificate'])->name('admin.approvePost')->middleware('checkLoggedIn');
     Route::get('/paymentApproval',[PaymentController::class, 'PaymentApproval'])->name('admin.approval.payment_approval')->middleware('checkLoggedIn');
     Route::get('/approvePayment/{id}/{status}/{paymentType}',[PaymentController::class, 'approvePayment'])->name('admin.approvePayment')->middleware('checkLoggedIn');
+    Route::post('/refundApproval/{id}',[PaymentController::class, 'approveRefund'])->name('admin.approval.refund_approval')->middleware('checkLoggedIn');
 });
 
