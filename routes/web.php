@@ -73,5 +73,6 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/paymentApproval',[PaymentController::class, 'PaymentApproval'])->name('admin.approval.payment_approval')->middleware('checkLoggedIn');
     Route::get('/approvePayment/{id}/{status}/{paymentType}',[PaymentController::class, 'approvePayment'])->name('admin.approvePayment')->middleware('checkLoggedIn');
     Route::post('/refundApproval/{id}',[PaymentController::class, 'approveRefund'])->name('admin.approval.refund_approval')->middleware('checkLoggedIn');
+    Route::post('/transactionApproval/{id}',[PaymentController::class, 'transactionApproval'])->name('admin.approval.transaction_approval')->middleware('checkLoggedIn');
 });
 

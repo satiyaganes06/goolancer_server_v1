@@ -65,34 +65,35 @@
                 <div class="collapse" id="advancedUI">
                     <ul class="nav sub-menu">
                         <li class="nav-item">
+                            <a href="{{route('admin.approval.post_approval')}}" class="nav-link">Post</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{route('admin.approval.service_approval')}}" class="nav-link">Service</a>
                         </li>
                         <li class="nav-item">
                             <a href="{{route('admin.approval.certificate_approval')}}" class="nav-link">Certificate</a>
                         </li>
+                        
                         <li class="nav-item">
-                            <a href="{{route('admin.approval.post_approval')}}" class="nav-link">Post</a>
+                            <a href="{{route('admin.viewAllRefundsInfo')}}" class="nav-link">
+                               Refund
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{route('admin.approval.payment_approval')}}" class="nav-link">Order Payment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.viewAllTransactionInfo')}}" class="nav-link">
+                                Transaction History
+                            </a>
                         </li>
                     </ul>
                 </div>
             </li>
 
-            <li class="nav-item">
-                <a href="pages/apps/chat.html" class="nav-link">
-                    <i class="link-icon" data-feather="dollar-sign"></i>
-                    <span class="link-title">Transaction History</span>
-                </a>
-            </li>
+            
 
-            <li class="nav-item">
-                <a href="pages/apps/chat.html" class="nav-link">
-                    <i class="link-icon" data-feather="dollar-sign"></i>
-                    <span class="link-title">Refund</span>
-                </a>
-            </li>
+           
 
             <li class="nav-item">
                 <a href="{{route('admin.viewAllServiceInfo')}}" class="nav-link">
