@@ -44,8 +44,16 @@ class PaymentController extends BaseController
                         'jm_int_timeline_status' => 1
                     )
                 );
+                
+
+                $userIDs = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
+                ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+                ->select('booking_request.br_var_up_ref as clientID', 'expert_service.es_var_user_ref as expertID')->where('jm_int_ref', $payment->jp_jm_ref)->first();
 
                 //Remove trans table and add era table and add the amount in quen
+                $revenue = ExpertRevenueAccount::where('era_up_var_ref', $userIDs->expertID)->first();
+                $revenue->era_double_deposit_queue = $revenue->era_double_deposit_queue + $payment->jp_double_account_transfer_amount;
+                $revenue->save();
 
                 $transactionHistory = TransactionHistory::create(
                     array(
