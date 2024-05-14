@@ -166,8 +166,9 @@ class ExpertRevenueController extends BaseController
 
             $jobResult = JobResult::find($request->input('jrCompleteID'));
             $jobResult->jr_double_progress_percent = 100;
+            $jobResult->save();
 
-            return $this->sendResponse('', 'Delivery completed successfully', '');
+            return $this->sendResponse('', 'Delivery completed successfully', '', $request->input('jrCompleteID'));
         } catch (\Throwable $th) {
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
