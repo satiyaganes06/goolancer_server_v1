@@ -84,7 +84,7 @@
                                 </div>
                                 <!-- Add a data attribute to store post details -->
                                 <div class="card-body text-center" data-post="{{ json_encode($post) }}">
-                                    <a href="{{route('admin.viewPostInfo', ['id' => $post->ep_int_ref])}}" >
+                                    <a href="{{ route('admin.viewPostInfo', ['id' => $post->ep_int_ref]) }}">
                                         View More
                                     </a>
                                 </div>
@@ -102,4 +102,5 @@
 
 
         </div>
-        @endsection
+    </div>
+@endsection

@@ -131,7 +131,7 @@
                                     <div class="col-md-6">
                                         <div class="d-flex">
 
-                                            @if ($transactionDetail->th_status == 1)
+                                            @if ($transactionDetail->th_int_payment_proof != null)
                                                 <div>
                                                     <p class="form-label">Receipt:</p>
                                                     <a
@@ -144,22 +144,11 @@
                                             @endif
 
 
-                                            @if ($transactionDetail->th_int_transaction_type == 3)
-                                                <div>
-                                                    <p class="form-label">Receipt:</p>
-                                                    <a
-                                                        href="http://goolancer.online/user/displayImage/{{ $transactionDetail->th_int_payment_proof }}"><i
-                                                            class="fs-6 text-dark link-icon" data-feather="file-text"
-                                                            style="height: 20"></i></a>
-                                                </div>
-
-                                                <div class="w-25"></div>
-                                            @endif
 
                                             <div>
                                                 <p class="form-label">Order Details:</p>
                                                 <a
-                                                    href="http://goolancer.online/user/displayImage/{{ $transactionDetail->th_int_payment_proof }}"><i
+                                                    href={{route('admin.viewOrderInfo', ['id' => $transactionDetail->th_jm_int_ref])}}><i
                                                         class="fs-6 text-dark link-icon" data-feather="shopping-bag"
                                                         style="height: 20"></i></a>
                                             </div>
@@ -194,7 +183,6 @@
                                                 disabled />
                                         </div>
                                     @endif
-
 
                                 </div>
 
@@ -257,9 +245,6 @@
                                 </div>
 
 
-                                {{--                     
-                                </div> --}}
-
                             </form>
                         </div>
                     </div>
@@ -268,5 +253,5 @@
 
 
         </div>
-
+    </div>
     @endsection

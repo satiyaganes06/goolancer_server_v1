@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PaymentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Common\CommonController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,8 +61,10 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/viewAllRefunds',[PaymentController::class, 'viewAllRefundList'])->name('admin.viewAllRefundsInfo')->middleware('checkLoggedIn');
     Route::get('/viewRefund/{id}',[PaymentController::class, 'ViewRefundInfo'])->name('admin.viewsRefundInfo')->middleware('checkLoggedIn');
 
-    Route::get('/viewAllTransactions',[PaymentController::class, 'viewAllTransactionInfo'])->name('admin.viewAllTransactionInfo');
+    Route::get('/viewAllTransactions',[PaymentController::class, 'viewAllTransactionInfo'])->name('admin.viewAllTransactionInfo')->middleware('checkLoggedIn');
     Route::get('/viewTransaction/{id}',[PaymentController::class, 'ViewTransactionInfo'])->name('admin.viewTransactionInfo')->middleware('checkLoggedIn');
+
+    Route::get('/viewOrder/{id}',[OrderController::class, 'viewOrderInfo'])->name('admin.viewOrderInfo')->middleware('checkLoggedIn');
 
     Route::get('/serviceApproval',[ServiceController::class, 'serviceApproval'])->name('admin.approval.service_approval')->middleware('checkLoggedIn');
     Route::get('/certificateApproval',[CertificateController::class, 'CertificateApproval'])->name('admin.approval.certificate_approval')->middleware('checkLoggedIn');

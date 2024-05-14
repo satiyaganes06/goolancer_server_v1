@@ -161,7 +161,8 @@
                 </div>
             </div>
         </div>
-
+        
+    </div>
         <script>
             $(document).ready(function() {
                 // Handle click event on the link to open the modal

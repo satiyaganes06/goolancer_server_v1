@@ -111,7 +111,8 @@
             </div>
 
         </div>
-
+    
+    </div>  
         <script>
             function myFunction() {
                 var input, filter, cards, card, description, i, txtValue;

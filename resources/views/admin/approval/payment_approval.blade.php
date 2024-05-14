@@ -148,6 +148,7 @@
 
         </div>
 
+    </div>
         <script>
             function myFunction() {
                 var input, filter, table, tr, td, i, txtValue;
