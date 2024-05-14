@@ -148,7 +148,7 @@
                                             <div>
                                                 <p class="form-label">Order Details:</p>
                                                 <a
-                                                    href={{route('admin.viewOrderInfo', ['id' => $transactionDetail->th_jm_int_ref])}}><i
+                                                    href=><i
                                                         class="fs-6 text-dark link-icon" data-feather="shopping-bag"
                                                         style="height: 20"></i></a>
                                             </div>
