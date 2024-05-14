@@ -138,6 +138,7 @@ Route::group(['prefix' => 'expert'], function(){
     Route::post('/getExpertRevenue', [ExpertRevenueController::class, 'getExpertRevenue']);
     Route::post('/getTransactionHistory', [ExpertRevenueController::class, 'getTransactionHistory']);
     Route::post('/requestWithdrawal', [ExpertRevenueController::class, 'requestWithdrawal']);
+    Route::post('/completeDelivery', [ExpertRevenueController::class, 'completeDelivery']);
 
 });
 

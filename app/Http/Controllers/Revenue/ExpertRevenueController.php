@@ -155,4 +155,17 @@ class ExpertRevenueController extends BaseController
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }
+
+    public function completeDelivery(Request $request){
+        try {
+            $revenue = ExpertRevenueAccount::where('era_up_var_ref',  $request->input('expertID'))->first();
+                $revenue->era_double_deposit_queue = $revenue->era_double_deposit_queue - $request->input('price');
+                $revenue->era_double_total_balance = $revenue->era_double_total_balance + $request->input('price');
+                $revenue->save();
+
+            return $this->sendResponse('', 'Delivery completed successfully', '');
+        } catch (\Throwable $th) {
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
 }
