@@ -163,6 +163,9 @@ class ExpertRevenueController extends BaseController
                 $revenue->era_double_total_balance = $revenue->era_double_total_balance + $request->input('price');
                 $revenue->save();
 
+            $jobResult = JobMain::where('jr_int_ref', $request->input('jrCompleteID'))->first();
+            $jobResult->jr_double_progress_percent = 100;
+
             return $this->sendResponse('', 'Delivery completed successfully', '');
         } catch (\Throwable $th) {
             return $this->sendError('Error : ' . $th->getMessage(), 500);
