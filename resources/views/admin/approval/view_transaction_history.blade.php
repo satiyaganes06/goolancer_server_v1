@@ -134,8 +134,7 @@
                                             @if ($transactionDetail->th_int_payment_proof != null)
                                                 <div>
                                                     <p class="form-label">Receipt:</p>
-                                                    <a
-                                                        href="http://goolancer.online/user/displayImage/{{ $transactionDetail->th_int_payment_proof }}"><i
+                                                    <a href="http://goolancer.online/user/displayImage/{{ $transactionDetail->th_int_payment_proof }}"><i
                                                             class="fs-6 text-dark link-icon" data-feather="file-text"
                                                             style="height: 20"></i></a>
                                                 </div>
@@ -148,7 +147,7 @@
                                             <div>
                                                 <p class="form-label">Order Details:</p>
                                                 <a
-                                                    href=><i
+                                                    href={{route('admin.viewOrderInfo', ['id' => $transactionDetail->th_jm_int_ref])}}><i
                                                         class="fs-6 text-dark link-icon" data-feather="shopping-bag"
                                                         style="height: 20"></i></a>
                                             </div>

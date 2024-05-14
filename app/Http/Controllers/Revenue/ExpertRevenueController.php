@@ -55,6 +55,7 @@ class ExpertRevenueController extends BaseController
         try {
             $transactionHistory = TransactionHistory::where('th_up_var_ref', $request->input('userID'))
             ->where('th_jm_int_ref', $request->input('jobMainID'))
+            ->where('th_int_transaction_type', 3)
             ->first();
             return $this->sendResponse('', '', $transactionHistory);
         } catch (\Throwable $th) {
