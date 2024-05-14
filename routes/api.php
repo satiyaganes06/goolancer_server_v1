@@ -105,6 +105,7 @@ Route::group(['prefix' => 'client'], function(){
     Route::post('/refundRequest', [ExpertRevenueController::class, 'refundRequest']);
     Route::post('/penaltyPayment', [ExpertRevenueController::class, 'penaltyPayment']);
     Route::post('/checkTransactionType', [ExpertRevenueController::class, 'checkTransactionType']);
+    Route::post('/completeDelivery', [ExpertRevenueController::class, 'completeDelivery']);
 });
 
 Route::group(['prefix' => 'expert'], function(){
@@ -138,7 +139,7 @@ Route::group(['prefix' => 'expert'], function(){
     Route::post('/getExpertRevenue', [ExpertRevenueController::class, 'getExpertRevenue']);
     Route::post('/getTransactionHistory', [ExpertRevenueController::class, 'getTransactionHistory']);
     Route::post('/requestWithdrawal', [ExpertRevenueController::class, 'requestWithdrawal']);
-    Route::post('/completeDelivery', [ExpertRevenueController::class, 'completeDelivery']);
+    
 
 });
 
