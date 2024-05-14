@@ -141,7 +141,7 @@ class PaymentController extends BaseController
 
                 //FIX ME: Add the transaction history
                 $file = $request->file('receipt');
-                $filePath = $file->store('uploads/files/PaymentReceipt'); //Fix in online mode
+                $filePath = $file->store('app/uploads/files/PaymentReceipt'); //Fix in online mode
 
                 $transactionHistory = new TransactionHistory();
                 $transactionHistory->th_up_var_ref = $userIDs->clientID;
@@ -214,7 +214,7 @@ class PaymentController extends BaseController
                     //Widthdraw
                     //FIX ME: Add the transaction history
                     $file = $request->file('receipt');
-                    $filePath = $file->store('uploads/files/PaymentReceipt'); //Fix in online mode
+                    $filePath = $file->store('app/uploads/files/PaymentReceipt'); //Fix in online mode //Fix in online mode
                     $transaction->th_int_payment_proof = $filePath;
                     $transaction->save();
 

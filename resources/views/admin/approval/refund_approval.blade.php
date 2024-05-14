@@ -97,7 +97,7 @@
                                             <td>
                                                 @if ($refundDetail->rr_int_status == 0)
                                                     <p class="text-warning">Pending</p>
-                                                @elseif ($refundDetail->jp_int_status == 1)
+                                                @elseif ($refundDetail->rr_int_status == 1)
                                                     <p class="text-success">Approved</p>
                                                 @else
                                                     <p class="text-danger">Rejected</p>
