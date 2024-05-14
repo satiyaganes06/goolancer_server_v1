@@ -12,6 +12,7 @@ use App\Models\Revenue\ExpertRevenueAccount;
 use App\Models\Revenue\TransactionHistory;
 use App\Models\Revenue\RefundRequest;
 use App\Models\Job\JobMain;
+use App\Models\Job\JobResult;
 use Illuminate\Support\Facades\DB;
 
 class ExpertRevenueController extends BaseController
@@ -163,7 +164,7 @@ class ExpertRevenueController extends BaseController
                 $revenue->era_double_total_balance = $revenue->era_double_total_balance + $request->input('price');
                 $revenue->save();
 
-            $jobResult = JobMain::where('jr_int_ref', $request->input('jrCompleteID'))->first();
+            $jobResult = JobResult::where('jr_int_ref', $request->input('jrCompleteID'))->first();
             $jobResult->jr_double_progress_percent = 100;
 
             return $this->sendResponse('', 'Delivery completed successfully', '');
