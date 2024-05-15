@@ -31,6 +31,8 @@
             </div>
             <div class="col-7 col-md-9 ps-0">
                 <div class="tab-content tab-content-vertical border p-3" id="v-tabContent">
+
+                    {{-- Initial Payment --}}
                     <div class="tab-pane fade show active" id="v-init" role="tabpanel" aria-labelledby="v-init-tab">
                         <h3 class="mb-1">Initial Payment</h3>
                         {{-- {"jp_int_ref":27,"jp_jm_ref":15,"jp_var_up_ref":"hj2RpkvwX5bv1V3rRHZYoaqL5vW2","jp_int_type":0,"jp_var_acount_transfer_name":"satiya","jp_date_account_transfer_date":"2024-04-24","jp_double_account_transfer_amount":21,"jp_var_account_transfer_remark":"none","jp_var_receipt":"app\/uploads\/files\/PaymentReceipt\/WLKLURhjkf0Xa2Fkk2MZ4Xmhg6xqfd6du364DudJ.jpg","jp_int_status":1,"jp_ts_created_at":"2024-04-24T12:27:26.000000Z","jp_ts_updated_at":"2024-04-24T12:27:26.000000Z"} --}}
@@ -58,6 +60,8 @@
                             <input class="form-control" value="Pending" disabled />
                         @endif
                     </div>
+
+                    {{-- Progress Order --}}
                     <div class="tab-pane fade" id="v-progress" role="tabpanel" aria-labelledby="v-progress-tab">
                         <h3 class="mb-1">Progress Order Details</h3>
                         {{-- <p>{{ $jobResults[0] }}</p> --}}
@@ -101,6 +105,8 @@
                             </div>
                         @endif
                     </div>
+
+                    {{-- Complete Payment --}}
                     <div class="tab-pane fade" id="v-complete" role="tabpanel" aria-labelledby="v-complete-tab">
                         <h3 class="mb-1">Complete Payment</h3>
                         {{-- <p>{{ $jobPaymentComplete }}</p> --}}
@@ -125,9 +131,13 @@
                                         style="height: 20"></i></a>
                             </div>
                         @else
-                            <input class="form-control" value="Pending" disabled />
+                        <div class="p-5 h-50 text-center">
+                            <p>No Payment</p>
+                        </div>
                         @endif
                     </div>
+
+                    {{-- Delivery --}}
                     <div class="tab-pane fade" id="v-delivery" role="tabpanel" aria-labelledby="v-delivery-tab">
                         <h3 class="mb-1">Delivery</h3>
                         <hr>
@@ -167,6 +177,8 @@
                             </div>
                         @endif
                     </div>
+
+                    {{-- Review & Rating --}}
                     <div class="tab-pane fade" id="v-review" role="tabpanel" aria-labelledby="v-review-tab">
                         <h3 class="mb-1">Review & Rating</h3>
                
