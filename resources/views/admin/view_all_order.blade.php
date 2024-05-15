@@ -54,10 +54,10 @@
     </style>
     <div class="page-content">
         <div class="w-100">
-            <h4 class="pb-4 text-center">Orders</h4>
+            <h4 class="pb-3 text-center">Orders</h4>
         </div>
 
-        <div id="servicesGrid" class="row row-cols-1 row-cols-md-4 g-4 mt-3 ">
+        <div id="servicesGrid" class="row row-cols-1 row-cols-md-4 g-4 mt-1 ">
 
             @foreach ($orders as $order)
                 <div style="margin-right: 10px" class="bg-white p-3 rounded-3">

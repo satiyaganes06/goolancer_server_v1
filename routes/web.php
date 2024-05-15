@@ -47,7 +47,7 @@ Route::group(['prefix' => 'admin'], function(){
 
 
     Route::get('/userAccountInfo',[UserAccountController::class, 'getUserAccountInfo'])->name('admin.userAccountInfo')->middleware('checkLoggedIn');
-    Route::get('/viewUserAccount/{id}',[UserAccountController::class, 'viewUserAccountInfo'])->name('admin.viewUserAccountInfo')->middleware('checkLoggedIn');
+    Route::get('/viewUserAccount/{id}/{role}',[UserAccountController::class, 'viewUserAccountInfo'])->name('admin.viewUserAccountInfo')->middleware('checkLoggedIn');
 
     Route::get('/viewAllService',[ServiceController::class, 'ViewAllServiceInfo'])->name('admin.viewAllServiceInfo')->middleware('checkLoggedIn');
     Route::get('/viewService/{id}/{from}',[ServiceController::class, 'ViewServiceInfo'])->name('admin.viewServiceInfo')->middleware('checkLoggedIn');
