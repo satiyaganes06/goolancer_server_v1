@@ -15,6 +15,7 @@ use App\Models\Job\JobResultComment;
 use App\Models\Job\JobResultFile;
 use App\Models\Job\JobUserRating;
 use App\Models\Post\ExpertPost;
+use App\Models\Revenue\ExpertRevenueAccount;
 
 class JobController extends BaseController
 {
@@ -410,6 +411,56 @@ class JobController extends BaseController
             return $this->sendResponse('get booking request details', '', $bookingRequests);
         } catch (\Throwable $th) {
             return $this->sendError($th->getMessage(), '', 500);
+        }
+    }
+
+    public function calcSummaryForExpertDashboard(Request $request){
+        try {
+            $jobMain = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
+            ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+            ->where('expert_service.es_var_user_ref', $request->input('expertID'))
+            ->select('job_main.*', 'booking_request.*', 'expert_service.*')
+            ->get();
+
+            $bookingRequest = BookingRequest::join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+            ->where('expert_service.es_var_user_ref', $request->input('expertID'))
+            ->get();
+
+            $totalBookingRequest = $bookingRequest->count();
+
+            $totalJob = $jobMain->count();
+            $totalJobMainStatus0 = $jobMain->where('jm_int_status', 0)->count();
+            $totalJobMainStatus1 = $jobMain->where('jm_int_status', 1)->count();
+            $totalJobMainStatus2 = $jobMain->where('jm_int_status', 2)->count();
+
+            $revenue = ExpertRevenueAccount::where('era_up_var_ref',  $request->input('expertID'))->first();
+
+            $totalEarning = $revenue->era_double_total_balance;
+            $totalRating = JobUserRating::join('job_main', 'job_user_rating.jur_jm_ref', '=', 'job_main.jm_int_ref')
+            ->join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
+            ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+            ->where('expert_service.es_var_user_ref', $request->input('expertID'))
+            ->avg('job_user_rating.jur_rating_point');
+
+
+            
+
+            $summary = array(
+                'totalJob' => $totalJob,
+                'totalBookingRequest' => $totalBookingRequest,
+                'totalJobMainStatus0' => $totalJobMainStatus0,
+                'totalJobMainStatus1' => $totalJobMainStatus1,
+                'totalJobMainStatus2' => $totalJobMainStatus2,
+                'totalEarning' => $totalEarning,
+                'totalRating' => $totalRating
+            );
+
+            return $this->sendResponse('get summary', '', $summary);
+
+        } catch (\Throwable $th) {
+
+            return $this->sendError($th->getMessage(), '', 500);
+
         }
     }
     
