@@ -70,7 +70,7 @@
                                             <td class="pt-3">{{ $client->up_var_email_contact }}</td>
                                             <td>
                                                 <div class="d-flex ">
-                                                    <a href=""><i class="fs-6 " class="link-icon" data-feather="eye"
+                                                    <a href=" {{route('admin.viewUserAccountInfo', ['id' => $client->up_int_ref])}}"><i class="fs-6 " class="link-icon" data-feather="eye"
                                                             style="height: 20"></i></a>
                                                     <div style="width:10px"></div>
 

@@ -44,11 +44,11 @@ class PaymentController extends BaseController
                         'jm_int_timeline_status' => 1
                     )
                 );
-                
+
 
                 $userIDs = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
-                ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
-                ->select('booking_request.br_var_up_ref as clientID', 'expert_service.es_var_user_ref as expertID')->where('jm_int_ref', $payment->jp_jm_ref)->first();
+                    ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+                    ->select('booking_request.br_var_up_ref as clientID', 'expert_service.es_var_user_ref as expertID')->where('jm_int_ref', $payment->jp_jm_ref)->first();
 
                 //Remove trans table and add era table and add the amount in quen
                 $revenue = ExpertRevenueAccount::where('era_up_var_ref', $userIDs->expertID)->first();
@@ -77,8 +77,8 @@ class PaymentController extends BaseController
                 );
 
                 $userIDs = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
-                ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
-                ->select('booking_request.br_var_up_ref as clientID', 'expert_service.es_var_user_ref as expertID')->where('jm_int_ref', $payment->jp_jm_ref)->first();
+                    ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+                    ->select('booking_request.br_var_up_ref as clientID', 'expert_service.es_var_user_ref as expertID')->where('jm_int_ref', $payment->jp_jm_ref)->first();
 
                 //Remove trans table and add era table and add the amount in quen
                 $revenue = ExpertRevenueAccount::where('era_up_var_ref', $userIDs->expertID)->first();
@@ -116,12 +116,23 @@ class PaymentController extends BaseController
 
         $refundDetails = RefundRequest::orderBy('rr_int_status', 'asc')->paginate(5);
 
+        for ($i = 0; $i < count($refundDetails); $i++) {
+            $clientID = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')->select('booking_request.br_var_up_ref as clientID')->where('jm_int_ref', $refundDetails[$i]->rr_jm_ref)->first();
+
+            $refundDetails[$i]->userProfile = UserProfile::where('up_int_ref', $clientID->clientID)->first();
+        }
+
         return view('admin.approval.refund_approval', compact('refundDetails'));
     }
 
     public function ViewRefundInfo($id)
     {
         $refundDetail = RefundRequest::where('rr_int_ref', $id)->first();
+        $clientID = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
+            ->select('booking_request.br_var_up_ref as clientID')->where('job_main.jm_int_ref', $refundDetail->rr_jm_ref)->first();
+
+        $refundDetail->userProfile = UserProfile::where('up_int_ref', $clientID->clientID)->first();
+
         return view('admin.approval.view_refund', compact('refundDetail'));
     }
 
@@ -160,6 +171,7 @@ class PaymentController extends BaseController
                 $transactionHistory->th_bank_name = 'Maybank';
                 $transactionHistory->th_int_payment_proof = $filePath;
                 $transactionHistory->th_var_transfer_account_name =  'Goolancer';
+                $transactionHistory->th_int_transfer_account_num =  '193208497824421';
                 $transactionHistory->th_status =  1;
                 $transactionHistory->save();
 
@@ -176,7 +188,6 @@ class PaymentController extends BaseController
                 $transactionHistoryClient->th_double_amount =  $userIDs->jobPrice * $request->input('penaltyPercentage');
                 $transactionHistoryClient->th_status =  0;
                 $transactionHistoryClient->save();
-        
             }
 
             DB::commit();
@@ -194,7 +205,7 @@ class PaymentController extends BaseController
 
     public function viewAllTransactionInfo()
     {
-        $transactionDetails = TransactionHistory::orderBy('th_status', 'asc')->paginate(5);
+        $transactionDetails = TransactionHistory::orderByRaw('th_status = 0 DESC, th_ts_created_at DESC')->paginate(5);
 
         for ($i = 0; $i < count($transactionDetails); $i++) {
             $transactionDetails[$i]->userProfile = UserProfile::where('up_int_ref', $transactionDetails[$i]->th_up_var_ref)->first();
@@ -231,7 +242,7 @@ class PaymentController extends BaseController
                     $revenue = ExpertRevenueAccount::where('era_up_var_ref', $transaction->th_up_var_ref)->first();
                     $revenue->era_double_total_balance = $revenue->era_double_total_balance - $transaction->th_double_amount;
                     $revenue->save();
-                }  else if ($transaction->th_int_transaction_type == 3) {
+                } else if ($transaction->th_int_transaction_type == 3) {
                     //Penalty
                     $expertID = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
                         ->join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')

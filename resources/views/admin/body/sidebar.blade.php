@@ -121,17 +121,17 @@
 
                 <div class="collapse" id="forms">
                     <ul class="nav sub-menu">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="pages/forms/basic-elements.html" class="nav-link">Requested</a>
+                        </li> --}}
+                        <li class="nav-item">
+                            <a href="{{route('admin.viewAllOrderInfo', ['status'=>0])}}" class="nav-link">Ongoing</a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/forms/advanced-elements.html" class="nav-link">Ongoing</a>
+                            <a href="{{route('admin.viewAllOrderInfo', ['status'=>1])}}" class="nav-link">Delivered</a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/forms/editors.html" class="nav-link">Delivered</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/forms/wizard.html" class="nav-link">Rejected</a>
+                            <a href="{{route('admin.viewAllOrderInfo', ['status'=>2])}}" class="nav-link">Rejected</a>
                         </li>
                     </ul>
                 </div>

@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin'], function(){
 
 
     Route::get('/userAccountInfo',[UserAccountController::class, 'getUserAccountInfo'])->name('admin.userAccountInfo')->middleware('checkLoggedIn');
+    Route::get('/viewUserAccount/{id}',[UserAccountController::class, 'viewUserAccountInfo'])->name('admin.viewUserAccountInfo')->middleware('checkLoggedIn');
 
     Route::get('/viewAllService',[ServiceController::class, 'ViewAllServiceInfo'])->name('admin.viewAllServiceInfo')->middleware('checkLoggedIn');
     Route::get('/viewService/{id}/{from}',[ServiceController::class, 'ViewServiceInfo'])->name('admin.viewServiceInfo')->middleware('checkLoggedIn');
@@ -65,6 +66,8 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/viewTransaction/{id}',[PaymentController::class, 'ViewTransactionInfo'])->name('admin.viewTransactionInfo')->middleware('checkLoggedIn');
 
     Route::get('/viewOrder/{id}',[OrderController::class, 'viewOrderInfo'])->name('admin.viewOrderInfo')->middleware('checkLoggedIn');
+
+    Route::get('/viewAllOrders/{status}',[OrderController::class, 'viewAllOrderInfo'])->name('admin.viewAllOrderInfo')->middleware('checkLoggedIn');
 
     Route::get('/serviceApproval',[ServiceController::class, 'serviceApproval'])->name('admin.approval.service_approval')->middleware('checkLoggedIn');
     Route::get('/certificateApproval',[CertificateController::class, 'CertificateApproval'])->name('admin.approval.certificate_approval')->middleware('checkLoggedIn');

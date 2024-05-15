@@ -18,4 +18,10 @@ class UserAccountController extends BaseController
         return view('admin.user_account', compact('clients', 'experts'));
     }
 
+    public function viewUserAccountInfo($id)
+    {
+        $user = UserProfile::where('up_int_ref',$id)->first();
+        return view('admin.view_user_profile', compact('user'));
+    }
+
 }

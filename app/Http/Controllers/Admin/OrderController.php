@@ -103,4 +103,21 @@ class OrderController extends BaseController
 
         return $bookingRequests;
     }
+
+    public function viewAllOrderInfo($status)
+    {
+        $orders = BookingRequest::join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
+            ->join('job_main', 'booking_request.br_int_ref', '=', 'job_main.jm_br_ref')
+            ->join('user_profile', 'booking_request.br_var_up_ref', '=', 'user_profile.up_int_ref')
+            ->where('job_main.jm_int_status', $status)
+            ->select(
+                'booking_request.*',
+                'expert_service.es_var_user_ref as expertID',
+                'job_main.*',
+                'user_profile.*'
+            )
+            ->get();
+
+        return view('admin.view_all_order', compact('orders'));
+    }
 }

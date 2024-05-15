@@ -80,8 +80,8 @@
                                         <tr>
                                             <th class="">{{ $i }}</th>
                                             <td>
-                                                <p>{{ $refundDetail->up_var_first_name }}
-                                                    {{ $refundDetail->up_var_last_name }} </p>
+                                                <p>{{ $refundDetail->userProfile->up_var_first_name }}
+                                                    {{ $refundDetail->userProfile->up_var_last_name }} </p>
 
                                             </td>
                                             <td>
