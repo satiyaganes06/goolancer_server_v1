@@ -131,7 +131,7 @@
                     <div class="tab-pane fade" id="v-delivery" role="tabpanel" aria-labelledby="v-delivery-tab">
                         <h3 class="mb-1">Delivery</h3>
                         <hr>
-                        @if ($jobResultsDeliverys != null)
+                        @if (count($jobResultsDeliverys) > 0)
 
 
                             <div class="m-3">
