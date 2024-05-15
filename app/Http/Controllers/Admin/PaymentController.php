@@ -234,12 +234,10 @@ class PaymentController extends BaseController
                     //Widthdraw
                     //FIX ME: Add the transaction history
                     $file = $request->file('receipt');
-                    if ($file) {
-                        $filePath = 'app/uploads/files/PaymentReceipt/maybank_atm_receipt.jpg';
+                  
+                    $filePath = 'app/uploads/files/PaymentReceipt/maybank_atm_receipt.jpg';
                         //$file->store('app/uploads/files/PaymentReceipt'); //Fix in online mode
-                    } else {
-                        $filePath = null;
-                    }
+                    
                     $transaction->th_int_payment_proof = $filePath;
                     $transaction->save();
 
@@ -267,6 +265,7 @@ class PaymentController extends BaseController
                     $transactionHistoryExpert->th_double_amount = $transaction->th_double_amount;
                     $transactionHistoryExpert->th_status =  1;
                     $transactionHistoryExpert->save();
+                    $transaction->save();
                 }
             }
 
