@@ -99,7 +99,7 @@
                                             </td>
                                             <td>
 
-                                                <p> {{ $transactionDetail->th_double_amount }}</p>
+                                                <p> {{ $transactionDetail->th_double_amount * 0.9 }}</p>
 
 
                                             </td>

@@ -464,24 +464,4 @@ class JobController extends BaseController
         }
     }
     
-    // public function getJobResultComments(Request $request){
-    //     try {
-    //         $jobResultComments = JobResultComment::where('jrc_jr_ref', $request->input('jobResultID'))->get();
-
-    //         return $this->sendResponse('get job result comments', '', $jobResultComments);
-    //     } catch (\Throwable $th) {
-    //         return $this->sendError($th->getMessage(), '', 500);
-    //     }
-    // }
-
-    // public function getJobResultByID(Request $request)
-    // {
-    //     try {
-    //         $jobResult = JobResult::where('jr_int_ref', $request->input('jobResultID'))->first();
-
-    //         return $this->sendResponse('get job result details', '', $jobResult);
-    //     } catch (\Throwable $th) {
-    //         return $this->sendError($th->getMessage(), '', 500);
-    //     }
-    // }
 }

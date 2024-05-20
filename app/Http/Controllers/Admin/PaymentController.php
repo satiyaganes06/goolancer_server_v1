@@ -30,7 +30,7 @@ class PaymentController extends BaseController
 
     public function approvePayment($id, $status, $paymentType)
     {
-        /**  FIX ME!!! Its not add/remove from the expert_revenue_account  */
+       
 
         $payment = JobPayment::find($id);
         $payment->jp_int_status = $status;
