@@ -125,8 +125,12 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Amount (RM):</label>
                                         <input class="form-control mb-4 mb-md-0"
-                                            value="{{ $transactionDetail->th_int_transaction_type == 1 ? $transactionDetail->th_double_amount *0.9 : $transactionDetail->th_double_amount  }}"
+                                            value="{{ $transactionDetail->th_int_transaction_type == 1 ? $transactionDetail->th_double_amount * 0.9 : $transactionDetail->th_double_amount }}"
                                             data-inputmask="'alias': 'currency', 'prefix':'RM'" disabled />
+
+                                        @if ($transactionDetail->th_int_transaction_type == 1)
+                                            <p>Fee: {{ $transactionDetail->th_double_amount * 0.1 }}</p>
+                                        @endif
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex">
@@ -134,7 +138,8 @@
                                             @if ($transactionDetail->th_int_payment_proof != null)
                                                 <div>
                                                     <p class="form-label">Receipt:</p>
-                                                    <a href="http://goolancer.online/user/displayImage/{{ $transactionDetail->th_int_payment_proof }}"><i
+                                                    <a
+                                                        href="http://goolancer.online/user/displayImage/{{ $transactionDetail->th_int_payment_proof }}"><i
                                                             class="fs-6 text-dark link-icon" data-feather="file-text"
                                                             style="height: 20"></i></a>
                                                 </div>
@@ -143,17 +148,16 @@
                                             @endif
 
 
-                                                @if ($transactionDetail->th_jm_int_ref != null)
+                                            @if ($transactionDetail->th_jm_int_ref != null)
                                                 <div>
                                                     <p class="form-label">Order Details:</p>
                                                     <a
-                                                        href={{route('admin.viewOrderInfo', ['id' => $transactionDetail->th_jm_int_ref])}}><i
+                                                        href={{ route('admin.viewOrderInfo', ['id' => $transactionDetail->th_jm_int_ref]) }}><i
                                                             class="fs-6 text-dark link-icon" data-feather="shopping-bag"
                                                             style="height: 20"></i></a>
                                                 </div>
-                                                    
-                                                @endif
-                                           
+                                            @endif
+
 
                                         </div>
                                     </div>
@@ -256,4 +260,4 @@
 
         </div>
     </div>
-    @endsection
+@endsection
