@@ -125,7 +125,7 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Amount (RM):</label>
                                         <input class="form-control mb-4 mb-md-0"
-                                            value="{{ $transactionDetail->th_double_amount }}"
+                                            value="{{ $transactionDetail->th_int_transaction_type == 1 ? $transactionDetail->th_double_amount *0.9 : $transactionDetail->th_double_amount  }}"
                                             data-inputmask="'alias': 'currency', 'prefix':'RM'" disabled />
                                     </div>
                                     <div class="col-md-6">

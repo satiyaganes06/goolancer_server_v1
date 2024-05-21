@@ -444,15 +444,13 @@ class JobController extends BaseController
             ->avg('job_user_rating.jur_rating_point');
 
 
-            
-
             $summary = array(
                 'totalJob' => $totalJob,
                 'totalBookingRequest' => $totalBookingRequest,
                 'totalJobMainStatus0' => $totalJobMainStatus0,
                 'totalJobMainStatus1' => $totalJobMainStatus1,
                 'totalJobMainStatus2' => $totalJobMainStatus2,
-                'totalEarning' => $totalEarning,
+                'totalEarning' => number_format($totalEarning, 2),
                 'totalRating' => $totalRating
             );
 
