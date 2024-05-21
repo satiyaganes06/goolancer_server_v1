@@ -424,6 +424,7 @@ class JobController extends BaseController
 
             $bookingRequest = BookingRequest::join('expert_service', 'booking_request.br_int_es_ref', '=', 'expert_service.es_int_ref')
             ->where('expert_service.es_var_user_ref', $request->input('expertID'))
+            ->where('booking_request.br_int_status', 0)
             ->get();
 
             $totalBookingRequest = $bookingRequest->count();
