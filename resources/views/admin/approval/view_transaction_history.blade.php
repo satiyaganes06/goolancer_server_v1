@@ -129,7 +129,7 @@
                                             data-inputmask="'alias': 'currency', 'prefix':'RM'" disabled />
 
                                         @if ($transactionDetail->th_int_transaction_type == 1)
-                                            <p>Fee: {{ $transactionDetail->th_double_amount * 0.1 }}</p>
+                                            <p>Fee: RM {{ $transactionDetail->th_double_amount * 0.1 }}</p>
                                         @endif
                                     </div>
                                     <div class="col-md-6">

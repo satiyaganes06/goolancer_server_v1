@@ -30,18 +30,18 @@ class EmailController extends BaseController
        return response()->json(['message' => 'Verification email sent']);
     }
 
-    public function verifyEmailAddress($cpLoginID){
+    // public function verifyEmailAddress($cpLoginID){
 
-        try {
-            $status  = UserLogin::where('ul_int_ref', $this->decode_data($cpLoginID))->update(array('ul_ts_email_verified_at' => date('Y-m-d H:i:s')));
+    //     try {
+    //         $status  = UserLogin::where('ul_int_ref', $this->decode_data($cpLoginID))->update(array('ul_ts_email_verified_at' => date('Y-m-d H:i:s')));
 
-            return view('emailVerifcation.successEmailVerification');
-        } catch (Exception $e) {
+    //         return view('emailVerifcation.successEmailVerification');
+    //     } catch (Exception $e) {
 
-            return view('emailVerifcation.failureEmailVerification');
-        }
+    //         return view('emailVerifcation.failureEmailVerification');
+    //     }
     
-    }
+    // }
     // public function verifyEmailAddress($lid)
 	// {
 		

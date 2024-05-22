@@ -64,3 +64,138 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+```
+goolancer_server_v1
+├─ .env
+├─ .env.example
+├─ app
+│  ├─ Console
+│  │  └─ Kernel.php
+│  ├─ Exceptions
+│  │  └─ Handler.php
+│  ├─ Http
+│  │  ├─ Controllers
+│  │  │  ├─ Admin
+│  │  │  │  ├─ AdminController.php
+│  │  │  │  ├─ CertificateController.php
+│  │  │  │  ├─ OrderController.php
+│  │  │  │  ├─ PaymentController.php
+│  │  │  │  ├─ PostController.php
+│  │  │  │  ├─ ServiceController.php
+│  │  │  │  └─ UserAccountController.php
+│  │  │  ├─ Auth
+│  │  │  │  ├─ AuthController.php
+│  │  │  │  └─ EmailController.php
+│  │  │  ├─ Base
+│  │  │  │  └─ BaseController.php
+│  │  │  ├─ Booking
+│  │  │  │  └─ BookingRequestController.php
+│  │  │  ├─ Certificate
+│  │  │  │  └─ ExpertCertificateController.php
+│  │  │  ├─ Common
+│  │  │  │  └─ CommonController.php
+│  │  │  ├─ Controller.php
+│  │  │  ├─ Job
+│  │  │  │  └─ JobController.php
+│  │  │  ├─ Post
+│  │  │  │  └─ ExpertPostController.php
+│  │  │  ├─ Revenue
+│  │  │  │  └─ ExpertRevenueController.php
+│  │  │  ├─ Service
+│  │  │  │  └─ ExpertServiceController.php
+│  │  │  └─ User
+│  │  │     └─ UserDetailsController.php
+│  │  ├─ Kernel.php
+│  │  └─ Middleware
+│  │     ├─ Authenticate.php
+│  │     ├─ CheckLoggedIn.php
+│  │     ├─ EncryptCookies.php
+│  │     ├─ PreventRequestsDuringMaintenance.php
+│  │     ├─ RedirectIfAuthenticated.php
+│  │     ├─ TrimStrings.php
+│  │     ├─ TrustHosts.php
+│  │     ├─ TrustProxies.php
+│  │     ├─ ValidateSignature.php
+│  │     └─ VerifyCsrfToken.php
+│  ├─ Models
+│  │  ├─ Booking
+│  │  │  ├─ BookingRequest.php
+│  │  │  ├─ BookingRequestImage.php
+│  │  │  └─ BookingRequestNegotiation.php
+│  │  ├─ Certificate
+│  │  │  ├─ ExpertCertificate.php
+│  │  │  └─ ExpertCertificateLink.php
+│  │  ├─ Job
+│  │  │  ├─ JobMain.php
+│  │  │  ├─ JobPayment.php
+│  │  │  ├─ JobResult.php
+│  │  │  ├─ JobResultComment.php
+│  │  │  ├─ JobResultFile.php
+│  │  │  └─ JobUserRating.php
+│  │  ├─ Post
+│  │  │  ├─ ExpertPost.php
+│  │  │  └─ ExpertPostLink.php
+│  │  ├─ Revenue
+│  │  │  ├─ ExpertRevenueAccount.php
+│  │  │  ├─ RefundRequest.php
+│  │  │  └─ TransactionHistory.php
+│  │  ├─ Service
+│  │  │  └─ ExpertService.php
+│  │  ├─ User
+│  │  │  ├─ RoleValidity.php
+│  │  │  ├─ UserLogin.php
+│  │  │  └─ UserProfile.php
+│  │  └─ User.php
+│  └─ Providers
+│     ├─ AppServiceProvider.php
+│     ├─ AuthServiceProvider.php
+│     ├─ BroadcastServiceProvider.php
+│     ├─ EventServiceProvider.php
+│     └─ RouteServiceProvider.php
+├─ resources
+│  ├─ css
+│  │  └─ app.css
+│  ├─ js
+│  │  ├─ app.js
+│  │  └─ bootstrap.js
+│  └─ views
+│     ├─ admin
+│     │  ├─ add_in_house_expert.blade.php
+│     │  ├─ admin_dashboard.blade.php
+│     │  ├─ approval
+│     │  │  ├─ cert_approval.blade.php
+│     │  │  ├─ payment_approval.blade.php
+│     │  │  ├─ post_approval.blade.php
+│     │  │  ├─ refund_approval.blade.php
+│     │  │  ├─ service_approval.blade.php
+│     │  │  ├─ transaction_history_approval.blade.php
+│     │  │  ├─ view_cert.blade.php
+│     │  │  ├─ view_post.blade.php
+│     │  │  ├─ view_refund.blade.php
+│     │  │  └─ view_transaction_history.blade.php
+│     │  ├─ auth
+│     │  │  ├─ login.blade.php
+│     │  │  └─ register.blade.php
+│     │  ├─ body
+│     │  │  ├─ footer.blade.php
+│     │  │  ├─ header.blade.php
+│     │  │  └─ sidebar.blade.php
+│     │  ├─ index.blade.php
+│     │  ├─ user_account.blade.php
+│     │  ├─ view_all_cert.blade.php
+│     │  ├─ view_all_order.blade.php
+│     │  ├─ view_all_post.blade.php
+│     │  ├─ view_all_service.blade.php
+│     │  ├─ view_cert.blade.php
+│     │  ├─ view_order.blade.php
+│     │  ├─ view_post.blade.php
+│     │  ├─ view_service.blade.php
+│     │  └─ view_user_profile.blade.php
+│     ├─ image_viewer.blade.php
+│     └─ welcome.blade.php
+├─ routes
+│  ├─ api.php
+│  ├─ channels.php
+│  ├─ console.php
+│  └─ web.php

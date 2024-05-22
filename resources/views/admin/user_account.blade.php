@@ -97,17 +97,22 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <h6 class="card-title">Expert List</h6>
-                            <form class="d-flex input-group w-auto mr-4" action="" method="GET">
+                            <div class="d-flex">
+                                <form class="d-flex input-group w-auto mr-4" action="" method="GET">
 
-                                <span class="input-group-text searchLogo bg-light" id="search-addon">
-                                    <button type="submit" class="border-0 bg-light"><i class="link-icon"
-                                            data-feather="search"></i></button>
-                                </span>
-
-                                <input type="search" id="form2" class="form-control searchField bg-light" name="searchTerm"
-                                    placeholder="Search" aria-label="Search" aria-describedby="search-addon" onkeyup="myFunction2()"/>
-
-                            </form>
+                                    <span class="input-group-text searchLogo bg-light" id="search-addon">
+                                        <button type="submit" class="border-0 bg-light"><i class="link-icon"
+                                                data-feather="search"></i></button>
+                                    </span>
+    
+                                    <input type="search" id="form2" class="form-control searchField bg-light" name="searchTerm"
+                                        placeholder="Search" aria-label="Search" aria-describedby="search-addon" onkeyup="myFunction2()"/>
+    
+                                </form>
+                                
+                                <a href="{{route('admin.addInHouseExpertViews')}}"><button class="btn btn-primary mx-2 rounded-3">Add Expert</button></a>
+                                
+                            </div>
                         </div>
                         <p class="text-muted mb-3">
                         <div class="table-responsive">
@@ -117,7 +122,6 @@
                                         <th>BIL</th>
                                         <th>FULL NAME</th>
                                         <th>EMAIL</th>
-                                        <th>Ongoing Projects</th>
                                         <th>Role</th>
                                         <th>ACTION</th>
                                     </tr>
@@ -141,7 +145,6 @@
                                             <td class="pt-3">
                                                 <p>{{ $expert->up_var_email_contact }}</p>
                                             </td>
-                                            <td class="pt-3">0</td>
                                             <td class="pt-3"><span class="badge rounded-pill bg-success">
                                                     @if ($expert->up_int_role == 2)
                                                         In-House

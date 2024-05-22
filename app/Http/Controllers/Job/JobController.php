@@ -16,6 +16,8 @@ use App\Models\Job\JobResultFile;
 use App\Models\Job\JobUserRating;
 use App\Models\Post\ExpertPost;
 use App\Models\Revenue\ExpertRevenueAccount;
+use App\Http\Controllers\Auth\EmailController;
+
 
 class JobController extends BaseController
 {
@@ -133,6 +135,10 @@ class JobController extends BaseController
             }
 
             DB::commit();
+
+            $email = new EmailController;
+
+            $email->sendVerificationEmail('satiyaganes.sg@gmail.com');
             
             if($request->input('jrDeliveryItem') == 1){
                             return $this->sendResponse('Succesfully delivered to your client', '', '');

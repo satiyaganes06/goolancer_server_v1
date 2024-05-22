@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Base\BaseController as BaseController;
 use App\Models\User\UserProfile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\Models\Booking\BookingRequest;
 
 class UserAccountController extends BaseController
@@ -15,6 +16,8 @@ class UserAccountController extends BaseController
         //
         $clients = UserProfile::where('up_int_role', 0)->paginate(10);
         $experts = DB::table('user_profile')->where('up_int_role', '<>', 0)->paginate(10);
+
+      
 
         return view('admin.user_account', compact('clients', 'experts'));
     }
@@ -50,6 +53,45 @@ class UserAccountController extends BaseController
             return view('admin.view_user_profile', compact('user', 'orders'));
         }
         
+    }
+
+    public function addInHouseExpertViewController(){
+        return view('admin.add_in_house_expert');
+    }
+
+    public function addInHouseExpertController(Request $request){
+        dd($request);
+
+        DB::beginTransaction();
+
+      //  Link to firebase
+      //  $request->input('password');
+
+        // Insert into user_profile
+        $userProfile = new UserProfile([
+            'up_int_ref' => ,
+            'up_var_first_name' => $request->input('first_name'),
+            'up_var_last_name' => $request->input('last_name'),
+            'up_var_nric' => $request->input('nric'),
+            'up_var_email_contact' => $request->input('email'),
+            'up_int_role' => 2,
+        ]);
+        $userProfile->save();
+
+        
+            $revenueAccount = new ExpertRevenueAccount();
+            $revenueAccount->era_up_var_ref = ;
+            $revenueAccount->era_double_total_balance = 0.0;
+            $revenueAccount->era_double_total_withdrawn = 0.0;
+            $revenueAccount->save();
+        
+
+        DB::commit();
+
+        $userProfileDetails = UserProfile::where('up_int_ref', $request->input('upID'))->first();
+
+        return redirect()->route('admin.userAccountInfo')->with('success', 'In-house expert added successfully');
+
     }
 
 }
