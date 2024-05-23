@@ -33,18 +33,20 @@ class CommonController extends BaseController
 
     public function displayImage($app, $uploads, $folder, $category, $filename)
     {
-        $path = storage_path($app. '/' .$uploads . '/' . $folder. '/' .$category. '/' .$filename);
+        $path = storage_path($uploads . '/' . $folder. '/' .$category. '/' .$filename);
         $contents = file_get_contents($path);
         $mime = mime_content_type($path);
 //app/uploads/images/JobResultFile/welcome2.png
-        if (file_exists($path)) {
-            // return response()->file($path);
-            return Response::make($contents, 200, [
-                'Content-Type' => $mime,
-                'Content-Disposition' => 'inline', // This header indicates to display the content inline (in the browser)
-            ]);
-        } else {
-            return $this->sendError('Error : ' . $e->getMessage(). ' Path: '. $this->decode_data($filepath), 500);
+        try {
+            if (file_exists($path)) {
+                // return response()->file($path);
+                return Response::make($contents, 200, [
+                    'Content-Type' => $mime,
+                    'Content-Disposition' => 'inline', // This header indicates to display the content inline (in the browser)
+                ]);
+            } 
+        } catch (\Throwable $e) {
+            return $this->sendError('Error : ' . $e->getMessage(). ' Path: '. $this->decode_data($path), 500);
         }
     }
 }
