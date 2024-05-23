@@ -26,9 +26,17 @@ class CommonController extends BaseController
                 'Content-Disposition' => 'inline', // This header indicates to display the content inline (in the browser)
             ]);
         } else {
-            return $this->sendError('Error : ' . ' Path: '. $this->decode_data($filepath), 500);
+
+            $path1 = storage_path('app/uploads/images/CertificateDocument/504708-200.png');
+            $contents1 = file_get_contents($path1);
+            $mime1 = mime_content_type($path);
+            
+            return Response::make($contents1, 200, [
+                'Content-Type' => $mime1,
+                'Content-Disposition' => 'inline', // This header indicates to display the content inline (in the browser)
+            ]);
         }
-        
+
     }
 
 
