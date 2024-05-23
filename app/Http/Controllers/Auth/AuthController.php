@@ -68,6 +68,7 @@ class AuthController extends BaseController
                     $revenueAccount->era_up_var_ref = $request->input('upID');
                     $revenueAccount->era_double_total_balance = 0.0;
                     $revenueAccount->era_double_total_withdrawn = 0.0;
+                    $revenueAccount->era_double_deposit_queue = 0.0;
                     $revenueAccount->save();
                 }
 
