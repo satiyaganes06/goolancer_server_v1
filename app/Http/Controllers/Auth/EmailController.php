@@ -20,9 +20,6 @@ use Illuminate\Support\Facades\Mail;
 
 class EmailController extends BaseController
 {
-
-    
-
     public function sendVerificationEmail($cpEmail)
     {
        Mail::to('satiyaganes.sg@gmail.com')->send(new VerificationMail(2133));

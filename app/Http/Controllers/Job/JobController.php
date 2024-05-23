@@ -136,9 +136,6 @@ class JobController extends BaseController
 
             DB::commit();
 
-            $email = new EmailController;
-
-            $email->sendVerificationEmail('satiyaganes.sg@gmail.com');
             
             if($request->input('jrDeliveryItem') == 1){
                             return $this->sendResponse('Succesfully delivered to your client', '', '');
