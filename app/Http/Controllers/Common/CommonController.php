@@ -26,14 +26,14 @@ class CommonController extends BaseController
                 'Content-Disposition' => 'inline', // This header indicates to display the content inline (in the browser)
             ]);
         } else {
-            return $this->sendError('Error : ' . $e->getMessage(). ' Path: '. $this->decode_data($filepath), 500);
+            return $this->sendError('Error : ' . ' Path: '. $this->decode_data($filepath), 500);
         }
     }
 
 
     public function displayImage($app, $uploads, $folder, $category, $filename)
     {
-        $path = storage_path($uploads . '/' . $folder. '/' .$category. '/' .$filename);
+        $path = storage_path($app. '/' .$uploads . '/' . $folder. '/' .$category. '/' .$filename);
         $contents = file_get_contents($path);
         $mime = mime_content_type($path);
 //app/uploads/images/JobResultFile/welcome2.png
