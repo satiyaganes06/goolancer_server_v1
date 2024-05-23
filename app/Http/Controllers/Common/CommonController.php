@@ -29,7 +29,7 @@ class CommonController extends BaseController
 
             $path1 = storage_path('app/uploads/images/CertificateDocument/504708-200.png');
             $contents1 = file_get_contents($path1);
-            $mime1 = mime_content_type($path);
+            $mime1 = mime_content_type($path1);
             
             return Response::make($contents1, 200, [
                 'Content-Type' => $mime1,
