@@ -7,6 +7,7 @@ use App\Models\User\UserProfile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Booking\BookingRequest;
+use App\Models\Revenue\ExpertRevenueAccount;
 
 class UserAccountController extends BaseController
 {
@@ -69,7 +70,7 @@ class UserAccountController extends BaseController
 
         // Insert into user_profile
         $userProfile = new UserProfile([
-            'up_int_ref' => ,
+            'up_int_ref' => 00,
             'up_var_first_name' => $request->input('first_name'),
             'up_var_last_name' => $request->input('last_name'),
             'up_var_nric' => $request->input('nric'),
@@ -80,7 +81,7 @@ class UserAccountController extends BaseController
 
         
             $revenueAccount = new ExpertRevenueAccount();
-            $revenueAccount->era_up_var_ref = ;
+            $revenueAccount->era_up_var_ref = 00;
             $revenueAccount->era_double_total_balance = 0.0;
             $revenueAccount->era_double_total_withdrawn = 0.0;
             $revenueAccount->save();
