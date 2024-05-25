@@ -453,8 +453,8 @@ class JobController extends BaseController
                 'totalJobMainStatus0' => $totalJobMainStatus0,
                 'totalJobMainStatus1' => $totalJobMainStatus1,
                 'totalJobMainStatus2' => $totalJobMainStatus2,
-                'totalEarning' => number_format($totalEarning, 2),
-                'totalRating' => $totalRating
+                'totalEarning' => number_format($totalEarning, 2) ?? 0,
+                'totalRating' => number_format($totalRating, 2) ?? 0,
             );
 
             return $this->sendResponse('get summary', '', $summary);
