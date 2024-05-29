@@ -147,11 +147,20 @@ class ExpertRevenueController extends BaseController
         try {
             $transactions = TransactionHistory::where('th_up_var_ref', $request->input('clientID'))->get();
 
-            if ($transactions->contains('th_int_transaction_type', 3)) {
-                 return $this->sendResponse('true', '', '');
-            } else {
-                return $this->sendResponse('false', '', '');
+            foreach ($transactions as $transaction) {
+                if ($transaction->th_int_transaction_type == 3 && $transaction->th_status == 0) {
+                    return $this->sendResponse('true', '', '');
+                }
             }
+
+            return $this->sendResponse('false', '', '');
+
+            // if ($transactions->contains('th_int_transaction_type', 3) && $transactions->contains('th_int_status', 4)) {
+
+            //      return $this->sendResponse('true', '', '');
+            // } else {
+            //     return $this->sendResponse('false', '', '');
+            // }
         } catch (\Throwable $th) {
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
