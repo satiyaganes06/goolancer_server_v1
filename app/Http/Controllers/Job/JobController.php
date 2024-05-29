@@ -35,7 +35,7 @@ class JobController extends BaseController
                     'expert_service.es_var_user_ref as expertID',
                     'job_main.*'
                 )
-                ->get();
+                ->get()->sortByDesc('jm_ts_created_at');
 
             // Fetch booking request images
             $bookingRequestImages = BookingRequestImage::whereIn('bri_br_ref', $bookingRequests->pluck('br_int_ref'))->get();
