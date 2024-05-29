@@ -117,9 +117,11 @@ class PaymentController extends BaseController
         $refundDetails = RefundRequest::orderBy('rr_int_status', 'asc')->paginate(5);
 
         for ($i = 0; $i < count($refundDetails); $i++) {
-            $clientID = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')->select('booking_request.br_var_up_ref as clientID')->where('jm_int_ref', $refundDetails[$i]->rr_jm_ref)->first();
+            $user = JobMain::join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
+            ->select('booking_request.br_var_up_ref as clientID')
+            ->where('jm_int_ref', $refundDetails[$i]->rr_jm_ref)->first();
 
-            $refundDetails[$i]->userProfile = UserProfile::where('up_int_ref', $clientID->clientID)->first();
+            $refundDetails[$i]->userProfile = UserProfile::where('up_int_ref', $user->clientID)->first();
         }
 
         return view('admin.approval.refund_approval', compact('refundDetails'));
