@@ -121,6 +121,8 @@ class PaymentController extends BaseController
             ->select('booking_request.br_var_up_ref as clientID')
             ->where('jm_int_ref', $refundDetails[$i]->rr_jm_ref)->first();
 
+            dd($user);
+
             $refundDetails[$i]->userProfile = UserProfile::where('up_int_ref', $user->clientID)->first();
         }
 
