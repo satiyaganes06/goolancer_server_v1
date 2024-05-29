@@ -162,9 +162,10 @@ class PaymentController extends BaseController
                 $revenue->era_double_deposit_queue = $revenue->era_double_deposit_queue - $refund->rr_double_amount;
                 $revenue->save();
 
-                //FIX ME: Add the transaction history
+                
                 $file = $request->file('receipt');
-                $filePath = $file->store('app/uploads/files/PaymentReceipt'); //Fix in online mode
+                $filePath = 'app/uploads/files/PaymentReceipt/maybank_atm_receipt.jpg';
+                //$filePath = $file->store('app/uploads/files/PaymentReceipt'); //Fix in online mode
 
                 $transactionHistory = new TransactionHistory();
                 $transactionHistory->th_up_var_ref = $userIDs->clientID;
