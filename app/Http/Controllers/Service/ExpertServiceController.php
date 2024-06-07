@@ -104,7 +104,7 @@ class ExpertServiceController extends BaseController
         $service = ExpertService::where('es_int_ref', $request->input('serviceID'))->first();
         try {
 
-            $service = ExpertService::where('es_int_ref', $request->input('serviceID'))->first();
+            $service = ExpertService::find($request->input('serviceID'));
             $service->es_int_service_type_ref = $request->input('serviceTypeID');
             $service->es_var_images = $request->input('imageURL');
             $service->es_var_title = $request->input('title');
