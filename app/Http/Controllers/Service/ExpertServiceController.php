@@ -98,4 +98,56 @@ class ExpertServiceController extends BaseController
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }
+
+    public function updateService(Request $request)
+    {
+        try {
+            $service = ExpertService::find($request->input('serviceID'));
+
+            if (!$service) {
+                return $this->sendError('Service not found', 404);
+            }
+
+            $service->es_var_user_ref = $request->input('expertID');
+            $service->es_int_service_type_ref = $request->input('serviceTypeID');
+            $service->es_var_images = $request->input('imageURL');
+            $service->es_var_title = $request->input('title');
+            $service->es_txt_description = $request->input('desc');
+            $service->es_var_starting_price = $request->input('price');
+            $service->es_estimate_delivery_time = $request->input('deliveryTime');
+            $service->es_bool_isInHouseExpert = $request->input('isInHouseExpert');
+            $service->es_fl_average_rating = $request->input('averageRating');
+            $service->es_int_status = 0;
+            $service->save();
+
+            $certificate = json_decode($request->input('certificates'));
+
+            ExpertCertificateLink::where('ecl_int_es_ref', $service->es_int_ref)->delete();
+
+            foreach ($certificate as $cert) {
+                $certLink = new ExpertCertificateLink();
+                $certLink->ecl_int_es_ref = $service->es_int_ref;
+                $certLink->ecl_int_ec_ref = $cert;
+                $certLink->save();
+            }
+
+            $posts = json_decode($request->input('posts'));
+
+            ExpertPostLink::where('epl_int_es_ref', $service->es_int_ref)->delete();
+
+            if ($posts != null) {
+                foreach ($posts as $post) {
+                    $postLink = new ExpertPostLink();
+                    $postLink->epl_int_es_ref = $service->es_int_ref;
+                    $postLink->epl_int_ep_ref = $post;
+                    $postLink->save();
+                }
+            }
+
+            return $this->sendResponse('Service updated successfully', '', $service);
+        } catch (\Throwable $th) {
+
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
 }

@@ -116,6 +116,7 @@ Route::group(['prefix' => 'expert'], function(){
     //Service
     Route::post('/getAllServiceByExpertID', [ExpertServiceController::class, 'getAllServiceByExpertID']);
     Route::post('/addService', [ExpertServiceController::class, 'addService']);
+    Route::post('/updateService', [ExpertServiceController::class, 'updateService']);
 
     //Post
     Route::post('/addPost', [ExpertPostController::class, 'addPost']);
