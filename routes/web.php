@@ -46,6 +46,10 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('/register',[AdminController::class, 'AdminRegister'])->name('admin.register');
 
+    Route::get('/coming-soon', function () {
+        return view('admin.coming_soon');
+    })->name('admin.coming_soon')->middleware('checkLoggedIn');
+
     // Route::get('/userAccount',[AdminController::class, 'AdminUserAccount'])->name('admin.userAccount')->middleware('checkLoggedIn');
 
 

@@ -139,7 +139,7 @@
 
             <li class="nav-item nav-category">Admin Extensions</li>
             <li class="nav-item">
-                <a href="pages/apps/chat.html" class="nav-link">
+                <a href="{{route('admin.coming_soon')}}" class="nav-link">
                     <i class="link-icon" data-feather="file-text"></i>
                     <span class="link-title">Media Manager</span>
                 </a>
