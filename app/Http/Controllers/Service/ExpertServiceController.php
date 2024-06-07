@@ -104,7 +104,7 @@ class ExpertServiceController extends BaseController
         $service = ExpertService::find($request->input('serviceID'));
         try {
 
-            
+          
             $service->es_int_service_type_ref = $request->input('serviceTypeID');
             $service->es_var_images = $request->input('imageURL');
             $service->es_var_title = $request->input('title');
@@ -122,7 +122,7 @@ class ExpertServiceController extends BaseController
             return $this->sendResponse('Service updated successfully', '', $service);
         } catch (\Throwable $th) {
 
-            return $this->sendError('Error : ' . $service, 500);
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }
 
