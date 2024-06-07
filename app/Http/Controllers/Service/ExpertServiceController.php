@@ -120,31 +120,22 @@ class ExpertServiceController extends BaseController
             $service->es_int_status = 0;
             $service->save();
 
-            $certificate = json_decode($request->input('certificates'));
-
-            ExpertCertificateLink::where('ecl_int_es_ref', $service->es_int_ref)->delete();
-
-            foreach ($certificate as $cert) {
-                $certLink = new ExpertCertificateLink();
-                $certLink->ecl_int_es_ref = $service->es_int_ref;
-                $certLink->ecl_int_ec_ref = $cert;
-                $certLink->save();
-            }
-
-            $posts = json_decode($request->input('posts'));
-
-            ExpertPostLink::where('epl_int_es_ref', $service->es_int_ref)->delete();
-
-            if ($posts != null) {
-                foreach ($posts as $post) {
-                    $postLink = new ExpertPostLink();
-                    $postLink->epl_int_es_ref = $service->es_int_ref;
-                    $postLink->epl_int_ep_ref = $post;
-                    $postLink->save();
-                }
-            }
+            
 
             return $this->sendResponse('Service updated successfully', '', $service);
+        } catch (\Throwable $th) {
+
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+
+    public function deleteService(Request $request)
+    {
+        try {
+            $service = ExpertService::where('es_int_ref', $request->input('serviceID'))->first();
+            $service->delete();
+
+            return $this->sendResponse('Service deleted successfully', '', $service);
         } catch (\Throwable $th) {
 
             return $this->sendError('Error : ' . $th->getMessage(), 500);
