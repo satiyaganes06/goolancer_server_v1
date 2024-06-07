@@ -24,7 +24,9 @@ class PaymentController extends BaseController
             ->join('job_main', 'job_payment.jp_jm_ref', '=', 'job_main.jm_int_ref')
             ->join('booking_request', 'job_main.jm_br_ref', '=', 'booking_request.br_int_ref')
             ->select('job_payment.*', 'user_profile.*', 'booking_request.*')
-            ->orderByRaw('jp_int_status = 0 DESC')->paginate(10);
+            ->orderByRaw('jp_int_status = 0 DESC')
+            ->orderBy('jp_ts_created_at', 'desc')
+            ->paginate(10);
         return view('admin.approval.payment_approval', compact('payments'));
     }
 
