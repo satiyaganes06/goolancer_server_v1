@@ -101,6 +101,7 @@ class ExpertServiceController extends BaseController
 
     public function updateService(Request $request)
     {
+        $service = ExpertService::where('es_int_ref', $request->input('serviceID'))->first();
         try {
 
             $service = ExpertService::where('es_int_ref', $request->input('serviceID'))->first();
@@ -121,7 +122,7 @@ class ExpertServiceController extends BaseController
             return $this->sendResponse('Service updated successfully', '', $service);
         } catch (\Throwable $th) {
 
-            return $this->sendError('Error : ' . $th->getMessage(), 500);
+            return $this->sendError('Error : ' . $service, 500);
         }
     }
 
