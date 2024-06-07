@@ -104,9 +104,6 @@ class ExpertServiceController extends BaseController
         try {
 
             $service = ExpertService::where('es_int_ref', $request->input('serviceID'))->first();
-
-
-            $service->es_var_user_ref = $request->input('expertID');
             $service->es_int_service_type_ref = $request->input('serviceTypeID');
             $service->es_var_images = $request->input('imageURL');
             $service->es_var_title = $request->input('title');
@@ -115,6 +112,7 @@ class ExpertServiceController extends BaseController
             $service->es_estimate_delivery_time = $request->input('deliveryTime');
             $service->es_bool_isInHouseExpert = $request->input('isInHouseExpert');
             $service->es_fl_average_rating = $request->input('averageRating');
+
             $service->es_int_status = 0;
             $service->save();
 
