@@ -467,7 +467,8 @@ class JobController extends BaseController
 
     public function undoOrder(Request $request){
         try {
-            $jobResult = JobResult::where('jr_int_ref', $request->input('jobResultID'))->delete();
+            $jobResult = JobResult::where('jr_int_ref', $request->input('jobResultID'))->first();
+            $jobResult->delete();
 
             return $this->sendResponse('Expert will do the review. Thank you for the feedback !!!', '', '');
 
