@@ -35,7 +35,7 @@ Route::group(['prefix' => 'user'], function(){
     
     //Base
     Route::post('/uploadImage', [BaseController::class, 'uploadImage']);
-    Route::post('/downloadFile', [CommonController::class, 'downloadFile']);
+    
 
     //Auth
     Route::post('/auth/register', [AuthController::class, 'register']);

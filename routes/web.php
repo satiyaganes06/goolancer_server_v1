@@ -28,6 +28,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'user'], function(){
 
+    Route::get('/downloadFile', [CommonController::class, 'downloadFile']);
     Route::get('/imageViewer/{filepath}',[CommonController::class, 'imageViewer'])->name('image.show');
     Route::get('/displayImage/{app}/{uploads}/{folder}/{category}/{filename}',[CommonController::class, 'displayImage']);
 
