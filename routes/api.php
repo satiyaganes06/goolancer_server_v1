@@ -66,6 +66,7 @@ Route::group(['prefix' => 'user'], function(){
     Route::post('/getJobCommentByJobResultID', [JobController::class, 'getJobCommentByJobResultID']);
     Route::post('/getJobResultDeliveryByJobMainID', [JobController::class, 'getJobResultDeliveryByJobMainID']);
     Route::post('/getRatingByJobMainID', [JobController::class, 'getJobUserRating']);
+    
 
     //Rating
     Route::post('/getUserRatingListByServiceID', [JobController::class, 'getUserRatingListByServiceID']);
@@ -100,6 +101,7 @@ Route::group(['prefix' => 'client'], function(){
     Route::post('/getJobResultComments', [JobController::class, 'getJobResultComments']);
     Route::post('/getJobResultByID', [JobController::class, 'getJobResultByID']);
     Route::post('/addJobUserRating', [JobController::class, 'addJobUserRating']);
+    Route::post('/undoOrder', [JobController::class, 'undoOrder']);
     
     //Revenue
     Route::post('/refundRequest', [ExpertRevenueController::class, 'refundRequest']);

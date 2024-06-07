@@ -464,5 +464,18 @@ class JobController extends BaseController
 
         }
     }
+
+    public function undoOrder(Request $request){
+        try {
+            $jobResult = JobResult::where('jr_int_ref', $request->input('jobResultID'))->delete();
+
+            return $this->sendResponse('Expert will do the review. Thank you for the feedback !!!', '', '');
+
+        } catch (\Throwable $th) {
+
+            return $this->sendError($th->getMessage(), '', 500);
+
+        }
+    }
     
 }
