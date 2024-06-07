@@ -102,7 +102,7 @@ class AuthController extends BaseController
         if ($request->email === 'admin@gmail.com' && $request->password === 'Pa$$w0rd') {
             // Authentication passed
             Session::put('loggedIn', true); // Set a session variable to indicate that the user is logged in
-            return redirect()->intended('/admin/dashboard'); // Redirect to dashboard or any other page
+            return redirect()->route('admin.generateReport'); // Redirect to dashboard or any other page
         } else {
             // Authentication failed
             return back()->withInput()->withErrors(['email' => 'Invalid credentials']);

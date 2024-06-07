@@ -14,9 +14,22 @@
     </style>
     <div class="page-content">
 
-        
-
         <div class="row">
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+        
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
             <div class="col-md-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
@@ -32,7 +45,7 @@
                                         <input type="text"
                                             class="form-control"
                                             name="first_name"
-                                            placeholder="John">
+                                            placeholder="John" required>
                                     </div>
                                 </div><!-- Col -->
                                 <div class="col-sm-6">
@@ -43,7 +56,7 @@
                                         <input type="text"
                                             class="form-control"
                                             name="last_name"
-                                            placeholder="Doe">
+                                            placeholder="Doe" required>
                                     </div>
                                 </div><!-- Col -->
                             </div><!-- Row -->
@@ -55,7 +68,7 @@
                                         <input type="text"
                                             class="form-control"
                                             name="nric"
-                                            placeholder="01038927382823">
+                                            placeholder="01038927382823" required>
                                     </div>
                                 </div><!-- Col -->
                                 <div class="col-sm-6">
@@ -80,7 +93,7 @@
                                         <input type="email"
                                             class="form-control"
                                             name="email"    
-                                            placeholder="johndoe@gmail.com">
+                                            placeholder="johndoe@gmail.com" required>
                                     </div>
                                 </div><!-- Col -->
                                 <div class="col-sm-6">
@@ -90,7 +103,7 @@
                                         <input type="password"
                                             class="form-control"
                                             autocomplete="off"
-                                            name="password">
+                                            name="password" required> 
                                     </div>
                                 </div><!-- Col -->
                             </div><!-- Row -->
@@ -105,7 +118,7 @@
                                             class="form-control"
                                             autocomplete="off"
                                             name="confirm_password"
-                                            placeholder="">
+                                            placeholder="" required>
                                     </div>
                                 </div><!-- Col -->
                             </div>

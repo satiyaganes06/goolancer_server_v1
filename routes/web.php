@@ -38,7 +38,10 @@ Route::post('/loginSubmit',[AuthController::class, 'adminLogin'])->name('loginSu
 
 Route::group(['prefix' => 'admin'], function(){
 
+    //Generate Report
+    Route::get('/generateReport',[AdminController::class, 'GenerateReport'])->name('admin.generateReport')->middleware('checkLoggedIn');
     Route::get('/dashboard',[AdminController::class, 'AdminDashboard'])->name('admin.dashboard')->middleware('checkLoggedIn');
+
     Route::post('/logout', [AuthController::class, 'adminLogout'])->name('logout')->middleware('checkLoggedIn');
 
     Route::get('/register',[AdminController::class, 'AdminRegister'])->name('admin.register');
@@ -82,5 +85,7 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/approvePayment/{id}/{status}/{paymentType}',[PaymentController::class, 'approvePayment'])->name('admin.approvePayment')->middleware('checkLoggedIn');
     Route::post('/refundApproval/{id}',[PaymentController::class, 'approveRefund'])->name('admin.approval.refund_approval')->middleware('checkLoggedIn');
     Route::post('/transactionApproval/{id}',[PaymentController::class, 'transactionApproval'])->name('admin.approval.transaction_approval')->middleware('checkLoggedIn');
+
+
 });
 
