@@ -102,11 +102,9 @@ class ExpertServiceController extends BaseController
     public function updateService(Request $request)
     {
         try {
-            $service = ExpertService::find($request->input('serviceID'));
 
-            if (!$service) {
-                return $this->sendError('Service not found', 404);
-            }
+            $service = ExpertService::where('es_int_ref', $request->input('serviceID'))->first();
+
 
             $service->es_var_user_ref = $request->input('expertID');
             $service->es_int_service_type_ref = $request->input('serviceTypeID');
