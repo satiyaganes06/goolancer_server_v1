@@ -47,6 +47,8 @@ class ExpertCertificateController extends BaseController
             $certificate->ec_date_issue_date = $request->input('issueDate');
             if($request->input('expiryDate') != null){
                 $certificate->ec_date_expiry_date = $request->input('expiryDate');
+            }else{
+                $certificate->ec_date_expiry_date = null;
             }
             $certificate->ec_var_image = $request->input('imageURL');
             $certificate->ec_int_status = 0;
