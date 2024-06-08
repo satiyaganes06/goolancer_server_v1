@@ -81,7 +81,7 @@
                                             <td><p style="width: 200px" class="ellipse">{{ $service->es_txt_description }}</p></td>
                                             <td class="pt-3">
                                                 <span class="badge rounded-pill bg-success">
-                                                    @if ($service->es_bool_isInHouseExpert == 2)
+                                                    @if ($service->es_bool_isInHouseExpert == 1)
                                                         In-House Expert
                                                     @else
                                                         Expert
