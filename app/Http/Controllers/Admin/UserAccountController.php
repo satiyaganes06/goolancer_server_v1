@@ -96,7 +96,7 @@ class UserAccountController extends BaseController
 
 
                 $revenueAccount = new ExpertRevenueAccount();
-                $revenueAccount->era_up_var_ref = 00;
+                $revenueAccount->era_up_var_ref = $createUser->uid;
                 $revenueAccount->era_double_total_balance = 0.0;
                 $revenueAccount->era_double_total_withdrawn = 0.0;
                 $revenueAccount->era_double_deposit_queue = 0.0;
