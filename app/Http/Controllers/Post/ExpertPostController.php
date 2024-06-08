@@ -40,6 +40,20 @@ class ExpertPostController extends BaseController
         }
     }
 
+    public function getAllExpertPost2(Request $request)
+    {
+        try {
+            $posteInfos = ExpertPost::join('user_profile', 'expert_post.ep_var_user_ref', '=', 'user_profile.up_int_ref')
+            ->where('ep_int_status', 1)
+            ->where('expert_post.ep_var_user_ref', '!=', $request->input('expertID'))
+                ->get();
+            return $this->sendResponse('get post details', '', $posteInfos);
+
+        } catch (\Throwable $th) {
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+
     public function getAllExpertPosts(Request $request)
     {
         try {

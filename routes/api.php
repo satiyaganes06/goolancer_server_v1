@@ -50,6 +50,7 @@ Route::group(['prefix' => 'user'], function(){
 
     //Post
     Route::post('/getAllExpertPost', [ExpertPostController::class, 'getAllExpertPost']);
+    Route::post('/getAllExpertPost2', [ExpertPostController::class, 'getAllExpertPost2']);
     Route::post('/getAllExpertPostByServiceCategory', [ExpertPostController::class, 'getAllExpertPostByServiceCategory']);
 
     //Negotiation
