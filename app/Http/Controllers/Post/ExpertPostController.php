@@ -47,7 +47,7 @@ class ExpertPostController extends BaseController
             ->where('ep_int_status', 1)
             ->where('expert_post.ep_var_user_ref', '!=', $request->input('expertID'))
                 ->get();
-            return $this->sendResponse('get post details', '', $posteInfos);
+            return $this->sendResponse('get post details 2', '', $posteInfos);
 
         } catch (\Throwable $th) {
             return $this->sendError('Error : ' . $th->getMessage(), 500);
