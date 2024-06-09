@@ -99,6 +99,8 @@ class ExpertRevenueController extends BaseController
 
             $jobMain = TransactionHistory::where('th_up_var_ref', $request->input('expertID'))->first();
 
+            dd($jobMain);
+
             $transactionHistory = new TransactionHistory();
             $transactionHistory->th_up_var_ref = $request->input('expertID');
                  $transactionHistory->th_jm_int_ref = $jobMain->jm_int_ref;
