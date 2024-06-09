@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\DB;
 class ExpertRevenueController extends BaseController
 {
     //
-    public function addExpertRevenue(Request $request){
+    public function addExpertRevenue(Request $request)
+    {
         try {
 
             $revenueAccount = new ExpertRevenueAccount();
@@ -34,7 +35,8 @@ class ExpertRevenueController extends BaseController
         }
     }
 
-    public function getExpertRevenue(Request $request){
+    public function getExpertRevenue(Request $request)
+    {
         try {
             $expertRevenue = ExpertRevenueAccount::where('era_up_var_ref', $request->input('expertID'))->first();
             return $this->sendResponse('', '', $expertRevenue);
@@ -43,42 +45,63 @@ class ExpertRevenueController extends BaseController
         }
     }
 
-    public function getTransactionHistory(Request $request){
+    public function getTransactionHistory(Request $request)
+    {
         try {
-            $transactionHistory = TransactionHistory::where('th_up_var_ref', $request->input('expertID'))->get();
-            return $this->sendResponse('', '', $transactionHistory);
-        } catch (\Throwable $th) {
-            return $this->sendError('Error : ' . $th->getMessage(), 500);
-        }
-    }
-    
-    public function getTransactionHistoryByUserID(Request $request){
-        try {
-            $transactionHistory = TransactionHistory::where('th_up_var_ref', $request->input('userID'))
-            ->where('th_jm_int_ref', $request->input('jobMainID'))
-            ->whereIn('th_int_transaction_type', [2, 3])
-            ->first();
+            $transactionHistory = DB::select(
+                'SELECT 
+                    th.*
+                FROM 
+                    transaction_history th
+                JOIN 
+                    job_main jm ON th.th_jm_int_ref = jm.jm_int_ref
+                JOIN 
+                    booking_request br ON jm.jm_br_ref = br.br_int_ref
+                JOIN 
+                    expert_service es ON br.br_int_es_ref = es.es_int_ref
+                WHERE 
+                    es.es_var_user_ref = :expertId
+                    AND th.th_status IN (0, 1)',
+                ['expertId' => $request->input('expertID')]
+            );
+
+
+            // $transactionHistory = TransactionHistory::where('th_up_var_ref', $request->input('expertID'))->get();
             return $this->sendResponse('', '', $transactionHistory);
         } catch (\Throwable $th) {
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }
 
-    public function requestWithdrawal(Request $request){
+    public function getTransactionHistoryByUserID(Request $request)
+    {
         try {
-             /**  FIX ME!!! Its not add/remove from the expert_revenue_account  */
-            
-            
-          //  DB::beginTransaction();
+            $transactionHistory = TransactionHistory::where('th_up_var_ref', $request->input('userID'))
+                ->where('th_jm_int_ref', $request->input('jobMainID'))
+                ->whereIn('th_int_transaction_type', [2, 3])
+                ->first();
+            return $this->sendResponse('', '', $transactionHistory);
+        } catch (\Throwable $th) {
+            return $this->sendError('Error : ' . $th->getMessage(), 500);
+        }
+    }
+
+    public function requestWithdrawal(Request $request)
+    {
+        try {
+            /**  FIX ME!!! Its not add/remove from the expert_revenue_account  */
+
+
+            //  DB::beginTransaction();
             // $revenueAccount = ExpertRevenueAccount::where('era_up_var_ref', $request->input('expertID'))->first();
             // $revenueAccount->era_double_total_withdrawn = $revenueAccount->era_double_total_withdrawn + $request->input('amount');
             // $revenueAccount->save();
 
             $transactionHistory = new TransactionHistory();
             $transactionHistory->th_up_var_ref = $request->input('expertID');
-       //     $transactionHistory->th_jm_int_ref = 0;
+            //     $transactionHistory->th_jm_int_ref = 0;
             $transactionHistory->th_int_transaction_type = 1;
-       //     $transactionHistory->th_int_payment_proof = 0;
+            //     $transactionHistory->th_int_payment_proof = 0;
             $transactionHistory->th_double_amount = $request->input('amount');
             $transactionHistory->th_bank_name = $request->input('bankName');
             $transactionHistory->th_var_transfer_account_name = $request->input('accountName');
@@ -86,15 +109,16 @@ class ExpertRevenueController extends BaseController
             $transactionHistory->th_status = 0;
             $transactionHistory->save();
 
-        //    DB::commit();
+            //    DB::commit();
             return $this->sendResponse('', 'Withdrawal request submitted successfully', '');
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }
-    
-    public function refundRequest(Request $request){
+
+    public function refundRequest(Request $request)
+    {
         try {
             $refundRequest = new RefundRequest();
             $refundRequest->rr_jm_ref = $request->input('jobMainID');
@@ -102,8 +126,8 @@ class ExpertRevenueController extends BaseController
             $refundRequest->rr_double_amount = $request->input('amount');
             $refundRequest->rr_int_status = 0;
             $refundRequest->save();
-            
-             JobMain::where('jm_int_ref', $request->input('jobMainID'))->update(
+
+            JobMain::where('jm_int_ref', $request->input('jobMainID'))->update(
                 array(
                     'jm_int_status' => 2
                 )
@@ -115,8 +139,9 @@ class ExpertRevenueController extends BaseController
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }
-    
-    public function getRefundDetailsByJobMainID(Request $request){
+
+    public function getRefundDetailsByJobMainID(Request $request)
+    {
         try {
             $refundDetails = RefundRequest::where('rr_jm_ref', $request->input('jobMainID'))->first();
             return $this->sendResponse('', '', $refundDetails);
@@ -124,15 +149,16 @@ class ExpertRevenueController extends BaseController
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }
-    
-    public function penaltyPayment(Request $request){
+
+    public function penaltyPayment(Request $request)
+    {
         try {
             TransactionHistory::where('th_int_ref', $request->input('transactionID'))->update(
                 array(
                     'th_int_payment_proof' => $request->input('proof'),
                     'th_var_transfer_account_name' => $request->input('accountName'),
                     'th_int_transfer_account_num' => $request->input('accountNum'),
-    
+
                 )
             );
 
@@ -141,7 +167,7 @@ class ExpertRevenueController extends BaseController
             return $this->sendError('Error : ' . $th->getMessage(), 500);
         }
     }
-    
+
     public function checkTransactionType(Request $request)
     {
         try {
@@ -166,12 +192,13 @@ class ExpertRevenueController extends BaseController
         }
     }
 
-    public function completeDelivery(Request $request){
+    public function completeDelivery(Request $request)
+    {
         try {
             $revenue = ExpertRevenueAccount::where('era_up_var_ref',  $request->input('expertID'))->first();
-                $revenue->era_double_deposit_queue = $revenue->era_double_deposit_queue - $request->input('price');
-                $revenue->era_double_total_balance = $revenue->era_double_total_balance + $request->input('price');
-                $revenue->save();
+            $revenue->era_double_deposit_queue = $revenue->era_double_deposit_queue - $request->input('price');
+            $revenue->era_double_total_balance = $revenue->era_double_total_balance + $request->input('price');
+            $revenue->save();
 
             $jobResult = JobResult::find($request->input('jrCompleteID'));
             $jobResult->jr_double_progress_percent = 100;
