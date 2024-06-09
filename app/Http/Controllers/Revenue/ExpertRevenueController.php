@@ -99,7 +99,8 @@ class ExpertRevenueController extends BaseController
 
             $jobMain = TransactionHistory::where('th_up_var_ref', $request->input('expertID'))->first();
 
-            dd($jobMain);
+          
+            return $this->sendResponse('', 'Withdrawal request submitted successfully', $jobMain);
 
             $transactionHistory = new TransactionHistory();
             $transactionHistory->th_up_var_ref = $request->input('expertID');
@@ -114,7 +115,7 @@ class ExpertRevenueController extends BaseController
             $transactionHistory->save();
 
             //    DB::commit();
-            return $this->sendResponse('', 'Withdrawal request submitted successfully', '');
+           
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->sendError('Error : ' . $th->getMessage(), 500);
