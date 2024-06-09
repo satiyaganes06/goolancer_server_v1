@@ -98,13 +98,11 @@ class ExpertRevenueController extends BaseController
             // $revenueAccount->save();
 
             $jobMain = TransactionHistory::where('th_up_var_ref', $request->input('expertID'))->first();
-
-          
-            return $this->sendResponse('', 'Withdrawal request submitted successfully', $jobMain);
+            
 
             $transactionHistory = new TransactionHistory();
             $transactionHistory->th_up_var_ref = $request->input('expertID');
-                 $transactionHistory->th_jm_int_ref = $jobMain->jm_int_ref;
+                 $transactionHistory->th_jm_int_ref = $jobMain->th_jm_int_ref;
             $transactionHistory->th_int_transaction_type = 1;
             //     $transactionHistory->th_int_payment_proof = 0;
             $transactionHistory->th_double_amount = $request->input('amount');
@@ -115,7 +113,7 @@ class ExpertRevenueController extends BaseController
             $transactionHistory->save();
 
             //    DB::commit();
-           
+            return $this->sendResponse('', 'Withdrawal request submitted successfully', '');
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->sendError('Error : ' . $th->getMessage(), 500);
