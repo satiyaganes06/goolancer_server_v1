@@ -97,9 +97,11 @@ class ExpertRevenueController extends BaseController
             // $revenueAccount->era_double_total_withdrawn = $revenueAccount->era_double_total_withdrawn + $request->input('amount');
             // $revenueAccount->save();
 
+            $jobMain = TransactionHistory::where('th_up_var_ref', $request->input('expertID'))->first();
+
             $transactionHistory = new TransactionHistory();
             $transactionHistory->th_up_var_ref = $request->input('expertID');
-            //     $transactionHistory->th_jm_int_ref = 0;
+                 $transactionHistory->th_jm_int_ref = $jobMain->jm_int_ref;
             $transactionHistory->th_int_transaction_type = 1;
             //     $transactionHistory->th_int_payment_proof = 0;
             $transactionHistory->th_double_amount = $request->input('amount');
