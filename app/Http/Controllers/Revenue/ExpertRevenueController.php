@@ -116,7 +116,7 @@ class ExpertRevenueController extends BaseController
             return $this->sendResponse('', 'Withdrawal request submitted successfully', '');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return $this->sendError('Error : ' . $th->getMessage(), 500);
+            return $this->sendError('Errorrr : ' . $th->getMessage(), 500);
         }
     }
 
