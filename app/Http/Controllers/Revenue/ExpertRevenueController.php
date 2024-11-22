@@ -102,7 +102,7 @@ class ExpertRevenueController extends BaseController
 
             $transactionHistory = new TransactionHistory();
             $transactionHistory->th_up_var_ref = $request->input('expertID');
-            $transactionHistory->th_jm_int_ref = $jobMain->th_jm_int_ref ?? 0;
+            $transactionHistory->th_jm_int_ref = 0;
             $transactionHistory->th_int_transaction_type = 1;
             //     $transactionHistory->th_int_payment_proof = 0;
             $transactionHistory->th_double_amount = $request->input('amount');
